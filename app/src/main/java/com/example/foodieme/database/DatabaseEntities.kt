@@ -32,7 +32,6 @@ fun List<DatabaseFlowsMenu>.asDomainModel() : List<FlowsMenu>{
             about =it.about,
             category = it.category,
             type = it.type,
-
             image = it.image,
             ingredients1 = it.ingredients1,
             ingredients2 = it.ingredients2,

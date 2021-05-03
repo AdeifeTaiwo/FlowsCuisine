@@ -13,7 +13,7 @@ import kotlinx.android.parcel.Parcelize
 //@JsonClass(generateAdapter = true)
 //data class NetworkFlowsMenuContainer(val flowsMenu: List<NetworkFlowsMenu>)
 
-@Parcelize
+
 @JsonClass(generateAdapter = true)
 data class NetworkFlowsMenu(
     val name: String,
@@ -32,11 +32,9 @@ data class NetworkFlowsMenu(
     val ingredients3: String,
     @Json(name = "ingre_url_four")
     val ingredients4: String
+    )
 
 
-
-
-    ): Parcelable
 fun List<NetworkFlowsMenu>.asDatabaseModel() : Array<DatabaseFlowsMenu>{
 
     return map {

@@ -24,7 +24,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.example.android.devbyteviewer"
+        applicationId "com.example.foodieme"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
@@ -59,15 +59,17 @@ dependencies {
 
     // Support libraries
     implementation "androidx.appcompat:appcompat:$version_appcompat"
-    implementation "androidx.fragment:fragment:$version_fragment"
+    implementation "androidx.fragment:fragment-ktx:$version_fragment"
     implementation "androidx.constraintlayout:constraintlayout:$version_constraint_layout"
 
     // Android KTX
     implementation "androidx.core:core-ktx:$version_core"
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 
     // Coroutines for getting off the UI thread
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_kotlin_coroutines"
@@ -97,17 +99,24 @@ dependencies {
 
     // Room database
     implementation "androidx.room:room-runtime:$version_room"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$version_room"
 
+    // Material design components
+    implementation "com.google.android.material:material:$version_material"
+
     // WorkManager
     implementation "android.arch.work:work-runtime-ktx:$version_work"
 
-    implementation 'com.google.code.gson:gson:2.8.5'
+
 
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
+   //Circular image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 
 }

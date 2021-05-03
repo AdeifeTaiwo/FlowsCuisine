@@ -18,7 +18,7 @@ package com.example.foodieme.network
  */
 
 
-import com.google.gson.GsonBuilder
+
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -51,7 +51,7 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-val gson = GsonBuilder().create()
+
 
 
 /**
@@ -63,7 +63,7 @@ object Network {
 
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://localhost:3000/")
+        .baseUrl("http://stark-headland-26585.herokuapp.com/")
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
         .build()
