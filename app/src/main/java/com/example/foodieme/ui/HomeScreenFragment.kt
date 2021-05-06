@@ -24,6 +24,8 @@ import com.google.android.material.chip.Chip
 
 class HomeScreenFragment : Fragment(){
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +47,7 @@ class HomeScreenFragment : Fragment(){
 
 
         val popularAdapter = HomeScreenAdapter(FlowsMenuClickListener {
-
+            homeScreenViewModel.onDetailScreenClicked(it)
 
         });
 
@@ -55,22 +57,27 @@ class HomeScreenFragment : Fragment(){
 
         });
 
+        homeScreenViewModel.onQueryChanged("food").observe(viewLifecycleOwner, Observer {
+            allItem2 -> allItem2.apply {
+                allItemAdapter?.allItem = allItem2
+        }
+        })
+
+
+
+
         homeScreenViewModel.navigateToDetailScreen.observe(viewLifecycleOwner,  Observer { flowsMenu ->
-            flowsMenu.let {
+            flowsMenu?.let {
 
 
                 if (findNavController().currentDestination?.id == R.id.homescreenfragment) {
-                    this.findNavController().navigate(HomeScreenFragmentDirections.actionHomescreenfragmentToDetailscreenfragment(flowsMenu))
+                    this.findNavController().navigate(HomeScreenFragmentDirections.actionHomescreenfragmentToMapsFragment())
                     homeScreenViewModel.onDetailScreenNavigated()
                 }
-                //this.findNavController().navigate(HomeScreenFragmentDirections.actionHomescreenfragmentToDetailscreenfragment2())
-                //this.findNavController().navigate(R.id.action_homescreenfragment_to_detailscreenfragment2)
+
 
 
             }
-
-
-
         })
 
         val types = listOf("stew", "food", "drinks", "cake", "milk", "", "swallow")
@@ -80,6 +87,17 @@ class HomeScreenFragment : Fragment(){
 
 
         binding.categoryAllMenuList.adapter = allItemAdapter
+
+
+
+
+
+            //initial value for all menu adapter
+
+
+
+
+
 
 
         val children = types.map { eachType ->
@@ -118,8 +136,8 @@ class HomeScreenFragment : Fragment(){
 
 
 
-
     }
+
 
 
 

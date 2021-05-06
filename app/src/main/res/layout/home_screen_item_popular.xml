@@ -19,20 +19,17 @@
 
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginRight="8dp"
-        app:cardCornerRadius="16dp"
-
-
+        app:cardCornerRadius="8dp"
+        app:shapeAppearance="@drawable/ovalcircle3"
         app:cardElevation="4dp"
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             >
 
             <androidx.constraintlayout.widget.Guideline
@@ -51,34 +48,41 @@
                 app:layout_constraintGuide_end="8dp" />
 
 
-
-
-
-
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:onClick="@{() -> popularClickListener.onClick(popular)}"
                 android:scaleType="fitXY"
                 app:imageUrl="@{popular.image}"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
                 tools:src="@tools:sample/backgrounds/scenic" />
 
-            <!--TextView
+            <ImageView
+                android:id="@+id/priceTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/left_well"
+                app:srcCompat="@drawable/price"
+
+                app:layout_constraintEnd_toStartOf="@id/textView2"
+                app:layout_constraintBottom_toBottomOf="@id/image"/>
+
+            <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:fontFamily="@font/lobster"
-
-                android:text="@{popular.name}"
-                android:textSize="16dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintStart_toStartOf="@id/left_well"
-                app:layout_constraintTop_toBottomOf="@id/image"
-                tools:text="name title" /-->
+                android:layout_marginLeft="8dp"
+                android:textColor="#FF953A"
+                android:text="@{String.valueOf(popular.price)}"
+                android:textSize="24dp"
+                app:layout_constraintLeft_toRightOf="@id/priceTag"
+                app:layout_constraintBottom_toBottomOf="@id/image"
+                tools:text="4000" />
 
 
 

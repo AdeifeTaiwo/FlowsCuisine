@@ -18,6 +18,9 @@
             app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@id/homescreenfragment" />
         <argument android:name="flowsMenu" />
+        <action
+            android:id="@+id/action_homescreenfragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
 
     </fragment>
 
@@ -34,4 +37,9 @@
         android:name="com.example.foodieme.ui.AboutFragment"
         android:label="fragment_about"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.foodieme.ui.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps" />
 </navigation>

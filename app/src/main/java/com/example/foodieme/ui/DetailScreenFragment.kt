@@ -22,6 +22,7 @@ class DetailScreenFragment  : Fragment() {
     ): View? {
         val binding: DetailscreenBinding = DataBindingUtil.inflate(
             inflater, R.layout.detailscreen, container, false
+
         )
 
         val arguments = DetailScreenFragmentArgs.fromBundle(requireArguments()).flowsMenu
@@ -32,6 +33,9 @@ class DetailScreenFragment  : Fragment() {
         val detailScreenViewModel = ViewModelProvider(this, detailScreenViewModelFactory).get(DetailScreenViewModel::class.java)
 
         binding.detailScreenViewModel  = detailScreenViewModel
+
+
+
 
         binding.lifecycleOwner = this
 

@@ -19,6 +19,7 @@ package com.example.foodieme.network
 
 
 
+import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -26,6 +27,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -51,6 +53,16 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
+private val gsonBuilder = GsonBuilder()
+
+    .setLenient()
+    .create()
+
+
+
+// and in you adapter set this instance
+
+
 
 
 
@@ -63,9 +75,12 @@ object Network {
 
 
     private val retrofit = Retrofit.Builder()
+
         .baseUrl("http://stark-headland-26585.herokuapp.com/")
+        .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
+
         .build()
 
     val retrofitService = retrofit.create(FlowsMenuService::class.java)

@@ -33,14 +33,15 @@ class DetailScreenViewModel (private  val flowsMenu: FlowsMenu) : ViewModel() {
     }
 
     fun add(){
-        _quantity.value = (_quantity.value)?.plus(1)
-        _price.value = _quantity.value?.let { (_price.value)?.times(it) }
+        _quantity.value = (_quantity.value)?.plus(1)?.let { Math.abs(it) }
+        _price.value = _quantity.value?.times(flowsMenu.price)
     }
 
 
     fun remove(){
-        _quantity.value = (_quantity.value)?.minus(1)
-        _price.value = _quantity.value?.let { (_price.value)?.times(it) }
+        _quantity.value = (_quantity.value)?.minus(1)?.let { Math.abs(it) }
+        _price.value = _quantity.value?.times(flowsMenu.price)
+
     }
 
 

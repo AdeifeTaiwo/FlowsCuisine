@@ -1,6 +1,7 @@
 package com.example.foodieme.util
 
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,5 +21,12 @@ import com.example.foodieme.ui.allmenulistadapter.AllMenuListAdapter
 
 @BindingAdapter("imageUrl")
 fun setImageUrl(imageView: ImageView, url: String) {
-    GlideApp.with(imageView.context).load(url).into(imageView)
+    Glide.with(imageView.context).load(url).into(imageView)
+}
+
+@BindingAdapter("setPrice")
+
+fun TextView.setPrice(double: Double?){
+    text = context.resources.getString(R.string.price, double.toString())
+
 }

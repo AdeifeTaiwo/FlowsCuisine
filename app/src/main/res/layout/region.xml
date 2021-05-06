@@ -7,5 +7,4 @@
     android:layout_height="wrap_content"
     style="@style/Widget.MaterialComponents.Chip.Choice"
     app:chipBackgroundColor="@color/cardview_light_background"
-    app:checkedIconVisible="true"
-    tools:checked="true"/>
+    />

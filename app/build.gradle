@@ -101,6 +101,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$version_room"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     kapt "androidx.room:room-compiler:$version_room"
 
     // Kotlin Extensions and Coroutines support for Room
@@ -118,5 +119,6 @@ dependencies {
    //Circular image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-
+    //implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 }
