@@ -12,7 +12,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="0dp"
+        tools:context=".ui.HomeScreenFragment">
 
         <TextView
             style="@style/TextAppearance.MaterialComponents.Headline5"
@@ -20,19 +22,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:layout_marginTop="16dp"
+            android:textColor="#FF953A"
             android:text="Popular"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/popularMenuList"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="60dp"
-            android:orientation="horizontal"
             android:clipToPadding="true"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
             android:paddingRight="12dp"
+
 
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +46,50 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:itemCount="3"
             tools:listitem="@layout/home_screen_item_popular" />
+
+
+        <HorizontalScrollView
+            android:id="@+id/horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/layout_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintTop_toBottomOf="@id/popularMenuList">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/region_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                app:singleLine="true" />
+
+        </HorizontalScrollView>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/layout_bg"
+            android:fillViewport="true"
+            android:orientation="horizontal"
+            android:paddingBottom="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/horizontal">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/category_all_MenuList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="true"
+
+                tools:listitem="@layout/home_screen_item_all" />
+
+        </androidx.core.widget.NestedScrollView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

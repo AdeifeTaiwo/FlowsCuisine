@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 
 class FlowsMenuRepository (private val database: FlowsMenuDatabase) {
 
-    val category = listOf("snack", "stew", "drink", "food")
+
 
     val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(database.flowsMenuDao.getFlowsMenu()){
         it.asDomainModel()
@@ -29,7 +29,7 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase) {
 
         return when(filter) {
             null -> flowsMenu
-            else -> Transformations.map(database.flowsMenuDao.getSnackFlowsMenu("filter")) {
+            else -> Transformations.map(database.flowsMenuDao.getSnackFlowsMenu(filter)) {
                 it.asDomainModel()
             }
         }
