@@ -5,6 +5,10 @@ import androidx.lifecycle.Transformations
 import com.example.foodieme.database.DatabaseFlowsMenu
 import com.example.foodieme.database.FlowsMenuDatabase;
 import com.example.foodieme.database.asDomainModel
+import com.example.foodieme.database.checkoutdatabase.Checkout
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
+import com.example.foodieme.database.checkoutdatabase.asDomainModel
+import com.example.foodieme.domain.CheckoutMenu
 import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.network.Network
 import com.example.foodieme.network.NetworkFlowsMenu
@@ -12,7 +16,7 @@ import com.example.foodieme.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class FlowsMenuRepository (private val database: FlowsMenuDatabase) {
+class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database2: CheckoutDatabase) {
 
 
 
@@ -24,6 +28,15 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase) {
         it.asDomainModel()
 
     }
+
+    //checkout adapter data
+    // TODO: TO BE SOON IMPLEMENTED
+    val checkoutMenu: LiveData<List<CheckoutMenu>> = Transformations.map(database2.checkoutDatabaseDao.getAllNights()){
+        it.asDomainModel()
+    }
+
+
+
 
     fun getFlowMenuByCategory(filter: String?) : LiveData<List<FlowsMenu>> {
 

@@ -16,13 +16,21 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 data class NetworkFlowsMenu(
+    @Json(name = "name")
     val name: String,
+    @Json(name = "nameDetail")
     val nameDetail: String,
+    @Json(name = "rating")
     val rating: Double,
+    @Json(name = "price")
     val price: Double,
+    @Json(name = "about")
     val about: String,
+    @Json(name = "category")
     val category: String,
+    @Json(name = "type")
     val type: String, //to determine if the item is a popular one
+    @Json(name = "image")
     val image: String,
     @Json(name = "ingre_url_one")
     val ingredients1: String,

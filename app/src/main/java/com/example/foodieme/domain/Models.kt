@@ -20,3 +20,15 @@ data class FlowsMenu (
     val ingredients3: String,
     val ingredients4: String
 ) : Parcelable
+
+
+@Parcelize
+data class CheckoutMenu(
+    val checkoutID: Long,
+    val imageUrl: String,
+    val priceInfo: Double,
+    val weight: String,
+    val quantity: Int,
+    val name: String
+
+) : Parcelable

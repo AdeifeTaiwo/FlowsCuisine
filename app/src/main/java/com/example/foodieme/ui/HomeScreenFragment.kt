@@ -71,7 +71,7 @@ class HomeScreenFragment : Fragment(){
 
 
                 if (findNavController().currentDestination?.id == R.id.homescreenfragment) {
-                    this.findNavController().navigate(HomeScreenFragmentDirections.actionHomescreenfragmentToMapsFragment())
+                    this.findNavController().navigate(HomeScreenFragmentDirections.actionHomescreenfragmentToDetailscreenfragment(flowsMenu))
                     homeScreenViewModel.onDetailScreenNavigated()
                 }
 
@@ -88,17 +88,7 @@ class HomeScreenFragment : Fragment(){
 
         binding.categoryAllMenuList.adapter = allItemAdapter
 
-
-
-
-
             //initial value for all menu adapter
-
-
-
-
-
-
 
         val children = types.map { eachType ->
             val chip = inflator.inflate(R.layout.region, chipGroup, false) as Chip

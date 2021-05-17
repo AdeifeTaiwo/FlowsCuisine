@@ -53,10 +53,7 @@ private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
     .build()
 
-private val gsonBuilder = GsonBuilder()
 
-    .setLenient()
-    .create()
 
 
 
@@ -77,7 +74,6 @@ object Network {
     private val retrofit = Retrofit.Builder()
 
         .baseUrl("http://stark-headland-26585.herokuapp.com/")
-        .addConverterFactory(GsonConverterFactory.create(gsonBuilder))
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
 

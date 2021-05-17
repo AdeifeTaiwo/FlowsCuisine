@@ -21,7 +21,6 @@ data class Checkout(
     var priceInfo: Double = 0.0,
 
 
-
     @ColumnInfo(name = "weight")
     var weight: String ="2",
 

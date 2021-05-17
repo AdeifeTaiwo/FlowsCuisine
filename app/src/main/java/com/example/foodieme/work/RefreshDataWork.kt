@@ -25,6 +25,7 @@ import com.example.foodieme.repository.FlowsMenuRepository
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase.Companion.getInstance
 
 import retrofit2.HttpException
 
@@ -40,7 +41,9 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
      */
     override suspend fun doWork(): Result {
         val database = getDatabase(applicationContext)
-        val repository = FlowsMenuRepository(database)
+        val database2 = getInstance(applicationContext)
+
+        val repository = FlowsMenuRepository(database, database2)
         return try {
             repository.refreshFlowsMenu()
             Result.success()

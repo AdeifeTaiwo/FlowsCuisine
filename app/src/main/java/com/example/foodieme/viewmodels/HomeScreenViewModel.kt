@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase.Companion.getInstance
 import com.example.foodieme.database.getDatabase
 import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.repository.FlowsMenuRepository
@@ -17,7 +18,8 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
 
     private val database = getDatabase(application)
-    private val menuRepository = FlowsMenuRepository(database)
+    private val database2 = getInstance(application)
+    private val menuRepository = FlowsMenuRepository(database, database2)
 
 
     init{
@@ -29,14 +31,17 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
     val popularFlowsMenu = menuRepository.popularFlowsMenu
 
 
+
+
+
     fun onQueryChanged(filter: String?) : LiveData<List<FlowsMenu>>{
        return menuRepository.getFlowMenuByCategory(filter)
     }
 
 
-    private val _navigateToDetailScreen = MutableLiveData<FlowsMenu>()
+    private val _navigateToDetailScreen = MutableLiveData<FlowsMenu?>()
 
-    val navigateToDetailScreen : LiveData<FlowsMenu>
+    val navigateToDetailScreen : LiveData<FlowsMenu?>
         get() = _navigateToDetailScreen
 
     fun onDetailScreenClicked(flowsMenu: FlowsMenu) {
