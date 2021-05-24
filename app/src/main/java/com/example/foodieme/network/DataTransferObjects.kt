@@ -16,6 +16,8 @@ import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
 data class NetworkFlowsMenu(
+    @Json(name = "_id")
+    val _id:String,
     @Json(name = "name")
     val name: String,
     @Json(name = "nameDetail")
@@ -39,8 +41,16 @@ data class NetworkFlowsMenu(
     @Json(name = "ingre_url_three")
     val ingredients3: String,
     @Json(name = "ingre_url_four")
-    val ingredients4: String
+    val ingredients4: String,
+    @Json(name ="__v")
+    val __v: String,
+    @Json(name = "comments")
+    val comments: List<String>
     )
+
+
+
+
 
 
 fun List<NetworkFlowsMenu>.asDatabaseModel() : Array<DatabaseFlowsMenu>{
@@ -63,5 +73,9 @@ fun List<NetworkFlowsMenu>.asDatabaseModel() : Array<DatabaseFlowsMenu>{
 
     }.toTypedArray()
 }
+
+
+
+
 
 

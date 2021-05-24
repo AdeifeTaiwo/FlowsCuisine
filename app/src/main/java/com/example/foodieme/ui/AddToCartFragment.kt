@@ -62,6 +62,13 @@ class AddToCartFragment : Fragment() {
         })
 
 
+        
+
+
+
+
+
+
 
         return binding.root
 

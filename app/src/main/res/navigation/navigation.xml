@@ -47,4 +47,9 @@
         android:name="com.example.foodieme.ui.AddToCartFragment"
         android:label="AddToCartFragment"
         tools:layout="@layout/add_to_cart_fragment"/>
+    <fragment
+        android:id="@+id/deliveryPageFragment"
+        android:name="com.example.foodieme.ui.DeliveryPageFragment"
+        android:label="DeliveryPageFragment"
+        tools:layout="@layout/delivery_page_fragment"/>
 </navigation>

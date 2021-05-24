@@ -10,6 +10,7 @@
 
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,8 +39,6 @@
             android:layout_marginBottom="16dp"
             android:orientation="horizontal"
             android:paddingRight="12dp"
-
-
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -85,11 +84,27 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:clipToPadding="true"
-
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/home_screen_item_all" />
 
         </androidx.core.widget.NestedScrollView>
 
 
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cardview_light_background"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:menu="@menu/bottom_nav_menu"
+            app:layout_behavior="com.google.android.material.bottomappbar.BottomAppBar$Behavior"
+            tools:layout_editor_absoluteX="72dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
 </layout>

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodieme.R
@@ -45,6 +46,7 @@ class HomeScreenFragment : Fragment(){
         binding.lifecycleOwner = this
 
 
+        NavigationUI.setupWithNavController(binding.bottomNav, findNavController())
 
         val popularAdapter = HomeScreenAdapter(FlowsMenuClickListener {
             homeScreenViewModel.onDetailScreenClicked(it)

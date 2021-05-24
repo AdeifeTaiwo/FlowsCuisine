@@ -10,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class AddToCartViewModel (application: Application): AndroidViewModel(application) {
 
 
@@ -108,6 +109,10 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
             }
             database2.checkoutDatabaseDao.update(toAdd)
         }
+    }
+
+    fun onCheckoutClick(){
+
     }
 
 
