@@ -42,7 +42,7 @@ import retrofit2.http.Query
 interface FlowsMenuService {
     @GET("tea")
 
-    fun getPlaylist() : Deferred<List<NetworkFlowsMenu>>
+    fun getPlaylist() : Call<List<NetworkFlowsMenu>>
 }
 
 /**
@@ -74,7 +74,7 @@ object Network {
     private val retrofit = Retrofit.Builder()
 
         .baseUrl("http://stark-headland-26585.herokuapp.com/")
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(GsonConverterFactory.create())
         .addCallAdapterFactory(CoroutineCallAdapterFactory())
 
         .build()

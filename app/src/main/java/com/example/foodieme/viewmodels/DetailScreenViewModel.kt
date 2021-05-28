@@ -11,6 +11,7 @@ import com.example.foodieme.repository.FlowsMenuRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.abs
 
 class DetailScreenViewModel (application: Application,
                              private  val flowsMenu: FlowsMenu,
@@ -52,7 +53,7 @@ class DetailScreenViewModel (application: Application,
 
 
     fun remove(){
-        _quantity.value = (_quantity.value)?.minus(1)?.let { Math.abs(it) }
+        _quantity.value = (_quantity.value)?.minus(1)?.let { abs(it) }
         _price.value = flowsMenu.price?.let { _quantity.value?.times(it) }
 
     }

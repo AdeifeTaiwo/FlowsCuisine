@@ -4,6 +4,7 @@ import android.os.Parcelable
 
 import com.example.foodieme.database.DatabaseFlowsMenu
 import com.example.foodieme.domain.FlowsMenu
+import com.google.gson.annotations.SerializedName
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
@@ -14,37 +15,37 @@ import kotlinx.android.parcel.Parcelize
 //data class NetworkFlowsMenuContainer(val flowsMenu: List<NetworkFlowsMenu>)
 
 
-@JsonClass(generateAdapter = true)
+
 data class NetworkFlowsMenu(
-    @Json(name = "_id")
+    @SerializedName("_id")
     val _id:String,
-    @Json(name = "name")
+    @SerializedName("name")
     val name: String,
-    @Json(name = "nameDetail")
+    @SerializedName("nameDetail")
     val nameDetail: String,
-    @Json(name = "rating")
+    @SerializedName( "rating")
     val rating: Double,
-    @Json(name = "price")
+    @SerializedName("price")
     val price: Double,
-    @Json(name = "about")
+    @SerializedName( "about")
     val about: String,
-    @Json(name = "category")
+    @SerializedName("category")
     val category: String,
-    @Json(name = "type")
+    @SerializedName("type")
     val type: String, //to determine if the item is a popular one
-    @Json(name = "image")
+    @SerializedName("image")
     val image: String,
-    @Json(name = "ingre_url_one")
+    @SerializedName("ingre_url_one")
     val ingredients1: String,
-    @Json(name = "ingre_url_two")
+    @SerializedName("ingre_url_two")
     val ingredients2: String,
-    @Json(name = "ingre_url_three")
+    @SerializedName("ingre_url_three")
     val ingredients3: String,
-    @Json(name = "ingre_url_four")
+    @SerializedName("ingre_url_four")
     val ingredients4: String,
-    @Json(name ="__v")
+    @SerializedName("__v")
     val __v: String,
-    @Json(name = "comments")
+    @SerializedName("comments")
     val comments: List<String>
     )
 

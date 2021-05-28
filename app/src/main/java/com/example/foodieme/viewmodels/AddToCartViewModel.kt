@@ -1,19 +1,22 @@
 package com.example.foodieme.viewmodels
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.*
 import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
 import com.example.foodieme.database.getDatabase
 import com.example.foodieme.repository.FlowsMenuRepository
+import com.flutterwave.raveandroid.RavePayActivity
+import com.flutterwave.raveandroid.RaveUiManager
+import com.flutterwave.raveandroid.rave_presentation.RavePayManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 
 
 class AddToCartViewModel (application: Application): AndroidViewModel(application) {
-
-
 
 
 
@@ -111,9 +114,16 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun onCheckoutClick(){
+    fun onCheckoutClick(view : View){
 
+
+
+        
     }
+
+
+
+
 
 
 }

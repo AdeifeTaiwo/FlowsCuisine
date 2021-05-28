@@ -52,4 +52,9 @@
         android:name="com.example.foodieme.ui.DeliveryPageFragment"
         android:label="DeliveryPageFragment"
         tools:layout="@layout/delivery_page_fragment"/>
+    <activity
+        android:id="@+id/flutterWave"
+        android:name="com.example.foodieme.FlutterWave"
+        android:label="activity_flutter_wave"
+        tools:layout="@layout/activity_flutter_wave" />
 </navigation>

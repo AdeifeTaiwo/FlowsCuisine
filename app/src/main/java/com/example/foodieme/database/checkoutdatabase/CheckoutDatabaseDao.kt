@@ -25,6 +25,9 @@ interface CheckoutDatabaseDao {
     @Query("SELECT * FROM check_out_page_table ORDER BY checkOutId DESC")
     fun getAllNights(): LiveData<List<Checkout>>
 
+    @Query("SELECT * FROM check_out_page_table ORDER BY checkOutId DESC")
+    fun getAllNightsNonLivedata(): List<Checkout>
+
 
     /**
      * Selects and returns the checkout data with given nightId.

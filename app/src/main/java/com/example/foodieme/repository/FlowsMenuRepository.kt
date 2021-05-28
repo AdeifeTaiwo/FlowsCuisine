@@ -1,11 +1,11 @@
 package com.example.foodieme.repository;
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.example.foodieme.database.DatabaseFlowsMenu
+import androidx.room.CoroutinesRoom
 import com.example.foodieme.database.FlowsMenuDatabase;
 import com.example.foodieme.database.asDomainModel
-import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
 import com.example.foodieme.database.checkoutdatabase.asDomainModel
 import com.example.foodieme.domain.CheckoutMenu
@@ -13,8 +13,15 @@ import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.network.Network
 import com.example.foodieme.network.NetworkFlowsMenu
 import com.example.foodieme.network.asDatabaseModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database2: CheckoutDatabase) {
 
@@ -59,19 +66,37 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database
 
 
 
-
+    val _getDatabase = MutableLiveData<List<NetworkFlowsMenu>>()
+    val getDatabase : LiveData<List<NetworkFlowsMenu>>
+    get() = _getDatabase
 
 
     suspend fun refreshFlowsMenu(){
-        withContext(Dispatchers.IO){
-            val playlist = Network.retrofitService.getPlaylist().await()
 
-                database.flowsMenuDao.insertAll(*playlist.asDatabaseModel())
+            val call = Network.retrofitService.getPlaylist()
+                    val response = suspendCoroutine<Response<List<NetworkFlowsMenu>>>{ continuation ->
+                        call. enqueue(object : Callback<List<NetworkFlowsMenu>> {
 
-        }
+
+                            override fun onResponse(
+                                call: Call<List<NetworkFlowsMenu>>, response: Response<List<NetworkFlowsMenu>>
+                            ) {
+                                    continuation.resume(response)
+                            }
+
+                            override fun onFailure(call: Call<List<NetworkFlowsMenu>>, t: Throwable) {}
+
+                        })
+
+                    }
+                val newList = response.body()?.asDatabaseModel()
+                if(newList!= null){
+                    withContext(Dispatchers.IO){
+                        database.flowsMenuDao.insertAll(*newList)
+                    }
+                }
+
+            }
+
+
     }
-
-
-
-
-}

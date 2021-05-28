@@ -28,7 +28,10 @@ data class Checkout(
     var quantity: Int = 0,
 
      @ColumnInfo(name = "name")
-    var name: String = "th"
+    var name: String = "th",
+
+    @ColumnInfo(name = "duration")
+    var duration: Long = 0L
 )
 
 fun List<Checkout>.asDomainModel(): List<CheckoutMenu>{

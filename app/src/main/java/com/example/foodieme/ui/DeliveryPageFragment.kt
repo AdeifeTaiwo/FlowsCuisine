@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import com.example.foodieme.R
 import com.example.foodieme.databinding.DeliveryPageFragmentBinding
 import com.example.foodieme.network.map.DirectionResponses
@@ -37,14 +38,21 @@ class DeliveryPageFragment : Fragment() {
 
     private val LOCATION_PERMISSION = "android.permission.ACCESS_FINE_LOCATION"
 
-    val homelatlng = LatLng(7.48727572549505, 4.533131903751711)
+    val homelatlng = LatLng(7.5180632199244055, 4.52874358169682)
     lateinit var duration : String
-    lateinit var durationString : String
+   lateinit var durationString : String
     lateinit var distance: String
 
+    //private val application = requireNotNull(this.activity).application
     private val viewModel: DeliveryPageViewModel by lazy {
-        ViewModelProvider(this).get(DeliveryPageViewModel::class.java)
+        val application = requireNotNull(this.activity).application
+        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(application)
+
+        ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
     }
+
+
+
 
 
     override fun onCreateView(
@@ -53,15 +61,33 @@ class DeliveryPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+
+
         val binding: DeliveryPageFragmentBinding =
             DataBindingUtil.inflate(inflater, R.layout.delivery_page_fragment, container, false)
 
+
+
+
         val application = requireNotNull(this.activity).application
-        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory()
+        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(application)
 
         val deliveryPageViewModel = ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
 
         binding.deliveryPageViewModel = viewModel
+
+        val adapter = CartListAdapter()
+        binding.recyclerView.adapter = adapter
+
+
+        binding.lifecycleOwner = this
+
+        viewModel.cartCheckoutMenu.observe(viewLifecycleOwner, Observer { cartItem ->
+            cartItem.apply {
+                adapter?.checkoutMenu = cartItem
+            }
+        })
+
 
 
 
@@ -73,8 +99,8 @@ class DeliveryPageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requestLastLocationOrStartLocationUpdates()
+
     }
 
     /**
@@ -102,6 +128,7 @@ class DeliveryPageFragment : Fragment() {
             if (location == null) {
                 startLocationUpdates(fusedLocationClient)
             } else {
+
                 val latLng = LatLng(location.latitude, location.longitude)
                 val usersLocation = latLng.latitude.toString() + "," + latLng.longitude.toString()
                 val flozzyLocation = homelatlng.latitude.toString()+"," + homelatlng.longitude.toString()
@@ -130,6 +157,7 @@ class DeliveryPageFragment : Fragment() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 val location = locationResult?.lastLocation ?: return
                 //viewModel.onLocationUpdated(location)
+                viewModel.createTimer()
                 val latLng = LatLng(location.latitude, location.longitude)
                 val usersLocation = latLng.latitude.toString() + "," + latLng.longitude.toString()
                 val flozzyLocation = homelatlng.latitude.toString()+"," + homelatlng.longitude.toString()
@@ -162,7 +190,9 @@ class DeliveryPageFragment : Fragment() {
             .enqueue(object : Callback<DirectionResponses>{
                 override fun onResponse(call: Call<DirectionResponses>, response: Response<DirectionResponses>) {
                     //drawPolyline(response)
+
                     getDuration(response)
+
                     Log.d("bisa dong oke", response.message())
                 }
 
@@ -178,10 +208,19 @@ class DeliveryPageFragment : Fragment() {
         duration = response.body()?.routes?.get(0)?.legs?.get(0)?.duration?.value.toString()
         durationString = response.body()?.routes?.get(0)?.legs?.get(0)?.duration?.text.toString()
         viewModel.setDistance(distance)
-        Log.e("duration", duration)
-        Log.e("duration2", durationString)
-        Log.e("tag", distance)
+
+        viewModel.update(duration.toLong())
+
+
+
+
+
+
 
     }
+
+
+
+
 
 }

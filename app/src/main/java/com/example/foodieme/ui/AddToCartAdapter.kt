@@ -5,15 +5,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodieme.R
-import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.databinding.CartScreenBinding
-import com.example.foodieme.databinding.HomeScreenItemAllBinding
 import com.example.foodieme.domain.CheckoutMenu
-import com.example.foodieme.domain.FlowsMenu
 
 class AddToCartAdapter (val clickListener: AddToCartClickListener,
                         val addToQuantityClickListener: AddToQuantityClickListener,

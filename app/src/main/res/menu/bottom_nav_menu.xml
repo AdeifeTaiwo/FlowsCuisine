@@ -11,8 +11,8 @@
         android:title="order" />
 
     <item
-        android:id="@+id/aboutFragment"
-        android:icon="@drawable/about"
+        android:id="@+id/addToCartFragment"
+        android:icon="@drawable/master_card_logo_svg"
         android:title="@string/about" />
     <item
         android:id="@+id/rulesFragment"

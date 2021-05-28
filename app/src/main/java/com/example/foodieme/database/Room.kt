@@ -20,7 +20,7 @@ interface FlowsMenuDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(vararg videos: DatabaseFlowsMenu)
+    suspend fun insertAll(vararg videos: DatabaseFlowsMenu)
 }
 
 @Database(entities = [DatabaseFlowsMenu::class], version = 1, exportSchema = false)
