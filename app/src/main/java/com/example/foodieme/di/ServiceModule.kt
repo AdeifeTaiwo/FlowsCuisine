@@ -9,14 +9,19 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 
 @InstallIn(SingletonComponent::class)
 @Module
 class ServiceModule {
 
+
+
+
     @Provides
-    fun provideApiService(converterFactory: GsonConverterFactory): FlowsMenuService {
+    @Singleton
+    fun provideApiService(): FlowsMenuService {
         return Retrofit.Builder()
 
             .baseUrl("http://stark-headland-26585.herokuapp.com/")

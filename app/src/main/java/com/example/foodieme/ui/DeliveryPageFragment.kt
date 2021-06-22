@@ -18,9 +18,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.foodieme.R
+import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 import com.example.foodieme.databinding.DeliveryPageFragmentBinding
 import com.example.foodieme.network.map.DirectionResponses
 import com.example.foodieme.network.map.MapApi
+import com.example.foodieme.repository.MainMainRepository
 import com.example.foodieme.viewmodels.DeliveryPageViewModel
 import com.example.foodieme.viewmodels.DeliveryPageViewModelFactory
 import com.google.android.gms.location.*
@@ -40,12 +42,14 @@ class DeliveryPageFragment : Fragment() {
 
     @Inject
     lateinit var adapter: CartListAdapter
+    @Inject  lateinit var mainRepository: MainMainRepository
+    @Inject  lateinit var timeDurationDao: TimeDurationDao
 
 
 
     private val viewModel: DeliveryPageViewModel by lazy {
         val application = requireNotNull(this.activity).application
-        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(application)
+        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(mainRepository, timeDurationDao, application)
 
         ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
     }
@@ -68,10 +72,10 @@ class DeliveryPageFragment : Fragment() {
 
 
 
-        val application = requireNotNull(this.activity).application
-        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(application)
+        //val application = requireNotNull(this.activity).application
+        //val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(application)
 
-        val deliveryPageViewModel = ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
+        //val deliveryPageViewModel = ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
 
         binding.deliveryPageViewModel = viewModel
 

@@ -1,7 +1,6 @@
 package com.example.foodieme.work
 
-import com.example.foodieme.database.getDatabase
-import com.example.foodieme.repository.FlowsMenuRepository
+
 
 /*
  * Copyright 2018, The Android Open Source Project
@@ -25,12 +24,15 @@ import com.example.foodieme.repository.FlowsMenuRepository
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase.Companion.getInstance
+import com.example.foodieme.repository.MainMainRepository
 
 import retrofit2.HttpException
+import javax.inject.Inject
 
 class RefreshDataWorker(appContext: Context, params: WorkerParameters):
     CoroutineWorker(appContext, params) {
+
+    @Inject lateinit var repository: MainMainRepository
 
     companion object {
         const val WORK_NAME = "RefreshDataWorker"
@@ -40,10 +42,7 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
      * A coroutine-friendly method to do your work.
      */
     override suspend fun doWork(): Result {
-        val database = getDatabase(applicationContext)
-        val database2 = getInstance(applicationContext)
 
-        val repository = FlowsMenuRepository(database, database2)
         return try {
             repository.refreshFlowsMenu()
             Result.success()

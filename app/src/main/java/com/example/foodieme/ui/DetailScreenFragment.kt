@@ -10,14 +10,21 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.foodieme.R
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.databinding.DetailscreenBinding
 import com.example.foodieme.domain.FlowsMenu
+import com.example.foodieme.repository.MainMainRepository
 import com.example.foodieme.viewmodels.DetailScreenViewModel
 import com.example.foodieme.viewmodels.DetailScreenViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailScreenFragment  : Fragment() {
+
+
+    @Inject lateinit var mainRepository: MainMainRepository
+    @Inject lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,12 +36,10 @@ class DetailScreenFragment  : Fragment() {
 
         )
 
-        val application = requireNotNull(this.activity).application
+
 
         val arguments = DetailScreenFragmentArgs.fromBundle(requireArguments()).flowsMenu
-
-
-        val detailScreenViewModelFactory = DetailScreenViewModelFactory(application, arguments)
+        val detailScreenViewModelFactory = DetailScreenViewModelFactory(mainRepository, checkoutDatabaseDao,  arguments)
 
         val detailScreenViewModel = ViewModelProvider(this, detailScreenViewModelFactory).get(DetailScreenViewModel::class.java)
 

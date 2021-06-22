@@ -1,14 +1,12 @@
 package com.example.foodieme.repository;
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
 import androidx.lifecycle.Transformations
-import androidx.room.CoroutinesRoom
 import com.example.foodieme.database.FlowsMenuDao
-import com.example.foodieme.database.FlowsMenuDatabase;
+
 import com.example.foodieme.database.asDomainModel
-import com.example.foodieme.database.checkoutdatabase.Checkout
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
+
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.database.checkoutdatabase.asDomainModel
 import com.example.foodieme.domain.CheckoutMenu
@@ -16,88 +14,113 @@ import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.network.FlowsMenuService
 import com.example.foodieme.network.NetworkFlowsMenu
 import com.example.foodieme.network.asDatabaseModel
-import kotlinx.coroutines.CoroutineScope
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
+import javax.inject.Singleton
+
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
+@Singleton
+class FlowsMenuRepository @Inject constructor() : MainMainRepository {
 
-class FlowsMenuRepository @Inject constructor( private val flowsMenuDao: FlowsMenuDao,
-                                               private val checkoutDatabaseDao: CheckoutDatabaseDao,
-                                               private val service: FlowsMenuService) {
+    @Inject lateinit var flowsMenuDao: FlowsMenuDao
+    @Inject lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
+    @Inject lateinit var  service: FlowsMenuService
 
 
-
-    val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getFlowsMenu()){
+    /**val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getFlowsMenu()) {
         it.asDomainModel()
     }
 
-    val popularFlowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getPopularFlowsMenu("popular")) {
-        it.asDomainModel()
+    val popularFlowsMenu: LiveData<List<FlowsMenu>> =
+        Transformations.map(flowsMenuDao.getPopularFlowsMenu("popular")) {
+            it.asDomainModel()
 
-    }
+        }
 
     //checkout adapter data
-    // TODO: TO BE SOON IMPLEMENTED
-    val checkoutMenu: LiveData<List<CheckoutMenu>> = Transformations.map(checkoutDatabaseDao.getAllNights()){
-        it.asDomainModel()
-    }
 
-    val activeOrder: LiveData<List<CheckoutMenu>> = Transformations.map(checkoutDatabaseDao.getActiveOrders(true)){
-        it.asDomainModel()
-    }
+    val checkoutMenu: LiveData<List<CheckoutMenu>> =
+        Transformations.map(checkoutDatabaseDao.getAllNights()) {
+            it.asDomainModel()
+        }
 
 
+    val activeOrder: LiveData<List<CheckoutMenu>> =
+        Transformations.map(checkoutDatabaseDao.getActiveOrders(true)) {
+            it.asDomainModel()
+        }
+
+    **/
 
 
+    override fun getFlowMenuByCategory(filter: String?): LiveData<List<FlowsMenu>> {
 
-    fun getFlowMenuByCategory(filter: String?) : LiveData<List<FlowsMenu>> {
-
-        return when(filter) {
-            null -> flowsMenu
+        return when (filter) {
+            null -> chipFlowMenu()
             else -> Transformations.map(flowsMenuDao.getSnackFlowsMenu(filter)) {
                 it.asDomainModel()
             }
         }
     }
 
+    override fun chipFlowMenu(): LiveData<List<FlowsMenu>> {
+        return Transformations.map(flowsMenuDao.getFlowsMenu()) {
+            it.asDomainModel()
+        }
+    }
+
+    override fun returnPopularFlowMenu(): LiveData<List<FlowsMenu>> {
+        return Transformations.map(flowsMenuDao.getPopularFlowsMenu("popular")) {
+            it.asDomainModel()
+        }
+    }
+
+    override fun returnCheckOutMenu(): LiveData<List<CheckoutMenu>> {
+        return Transformations.map(checkoutDatabaseDao.getAllNights()) {
+            it.asDomainModel()
+        }
+    }
+
+    override fun returnActiveOrdersInCheckOutMenu(): LiveData<List<CheckoutMenu>> {
+        return Transformations.map(checkoutDatabaseDao.getActiveOrders(true)) {
+            it.asDomainModel()
+        }
+    }
 
 
-    suspend fun refreshFlowsMenu(){
-
+    override suspend fun refreshFlowsMenu() {
             val call = service.getPlaylist()
-                    val response = suspendCoroutine<Response<List<NetworkFlowsMenu>>>{ continuation ->
-                        call. enqueue(object : Callback<List<NetworkFlowsMenu>> {
+            val response = suspendCoroutine<Response<List<NetworkFlowsMenu>>> { continuation ->
+                call.enqueue(object : Callback<List<NetworkFlowsMenu>> {
 
-
-                            override fun onResponse(
-                                call: Call<List<NetworkFlowsMenu>>, response: Response<List<NetworkFlowsMenu>>
-                            ) {
-                                    continuation.resume(response)
-                            }
-
-                            override fun onFailure(call: Call<List<NetworkFlowsMenu>>, t: Throwable) {}
-
-                        })
-
+                    override fun onResponse(
+                        call: Call<List<NetworkFlowsMenu>>,
+                        response: Response<List<NetworkFlowsMenu>>
+                    ) {
+                        continuation.resume(response)
                     }
-                val newList = response.body()?.asDatabaseModel()
-                if(newList!= null){
-                    withContext(Dispatchers.IO){
-                        flowsMenuDao.insertAll(*newList)
-                    }
-                }
 
+                    override fun onFailure(call: Call<List<NetworkFlowsMenu>>, t: Throwable) {}
+                })
             }
+            val newList = response.body()?.asDatabaseModel()
+            if (newList != null) {
+                withContext(Dispatchers.IO) {
+                    flowsMenuDao.insertAll(*newList)
+                }
+            }
+        }
+
+
 
 
     }
-
 
 

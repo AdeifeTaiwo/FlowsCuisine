@@ -6,29 +6,27 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase.Companion.getInstance
-import com.example.foodieme.database.getDatabase
 import com.example.foodieme.database.timedurationdatabase.TimeAndDuration
-import com.example.foodieme.database.timedurationdatabase.TimeDurationDatabase.Companion.getDurationInstance
+import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 import com.example.foodieme.domain.FlowsMenu
-import com.example.foodieme.repository.FlowsMenuRepository
+import com.example.foodieme.repository.MainMainRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HomeScreenViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor( private val mainRepository: MainMainRepository,
+                                               private val durationDao: TimeDurationDao,
+                                               application: Application) : AndroidViewModel(application) {
+
+
 
 
 
 
     private var latestAddition = MutableLiveData<TimeAndDuration?>()
-
-    private val database = getDatabase(application)
-    private val database2 = getInstance(application)
-    private val database3 = getDurationInstance(application)
-    private val menuRepository = FlowsMenuRepository(database, database2)
-
-
     private val _distance = MutableLiveData<String>()
     val distance: LiveData<String>
         get() = _distance
@@ -42,12 +40,12 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
     init{
         viewModelScope.launch {
-            menuRepository.refreshFlowsMenu()
+            mainRepository.refreshFlowsMenu()
         }
 
     }
 
-    val popularFlowsMenu = menuRepository.popularFlowsMenu
+    val popularFlowsMenu = mainRepository.returnPopularFlowMenu()
 
 
 
@@ -55,7 +53,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
 
     fun onQueryChanged(filter: String?) : LiveData<List<FlowsMenu>>{
-       return menuRepository.getFlowMenuByCategory(filter)
+       return mainRepository.getFlowMenuByCategory(filter)
     }
 
 
@@ -76,7 +74,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
 
     private suspend fun getLatestAdditonFromDatabase(): TimeAndDuration? {
-        return database3.durationDatabaseDao.getLatestAddition()
+        return durationDao.getLatestAddition()
 
     }
 
@@ -108,7 +106,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
             val time = latestAddition.value ?: return@withContext
             time.distance = distance
             time.duration = duration
-            database3.durationDatabaseDao.update(time)
+            durationDao.update(time)
 
         }
 
@@ -116,13 +114,13 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
 
     private suspend fun update(night: TimeAndDuration) {
         withContext(Dispatchers.IO) {
-            database3.durationDatabaseDao.update(night)
+            durationDao.update(night)
         }
     }
 
     private suspend fun insert(checkout: TimeAndDuration){
         withContext(Dispatchers.IO){
-            database3.durationDatabaseDao.insert(checkout)
+            durationDao.insert(checkout)
         }
     }
 

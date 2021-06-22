@@ -15,9 +15,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodieme.R
+import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 import com.example.foodieme.databinding.HomeScreenBinding
 import com.example.foodieme.network.map.DirectionResponses
 import com.example.foodieme.network.map.MapApi
+import com.example.foodieme.repository.MainMainRepository
 import com.example.foodieme.ui.allmenulistadapter.AllMenuListAdapter
 import com.example.foodieme.ui.allmenulistadapter.MenuClickListener
 import com.example.foodieme.viewmodels.HomeScreenViewModel
@@ -29,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeScreenFragment : Fragment(){
@@ -41,10 +44,13 @@ class HomeScreenFragment : Fragment(){
     lateinit var durationString : String
     lateinit var distance: String
 
+    @Inject lateinit var mainMainRepository: MainMainRepository
+    @Inject lateinit var durationDao: TimeDurationDao
+
 
     private val viewModel: HomeScreenViewModel by lazy {
         val application = requireNotNull(this.activity).application
-        val homeScreenViewModelFactory =  HomeViewModelFactory(application)
+        val homeScreenViewModelFactory =  HomeViewModelFactory(mainMainRepository, durationDao, application)
 
         ViewModelProvider(this, homeScreenViewModelFactory).get(HomeScreenViewModel::class.java)
     }
@@ -60,7 +66,7 @@ class HomeScreenFragment : Fragment(){
 
         val application = requireNotNull(this.activity).application
 
-        val homeScreenViewModelFactory = HomeViewModelFactory(application)
+        val homeScreenViewModelFactory = HomeViewModelFactory(mainMainRepository,durationDao, application)
         var homeScreenViewModel = ViewModelProvider(this, homeScreenViewModelFactory).get(HomeScreenViewModel::class.java)
 
         homeScreenViewModel = viewModel

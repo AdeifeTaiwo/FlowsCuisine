@@ -8,21 +8,27 @@ import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
-import com.example.foodieme.database.getDatabase
-import com.example.foodieme.database.timedurationdatabase.TimeDurationDatabase.Companion.getDurationInstance
+import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
+
 import com.example.foodieme.repository.FlowsMenuRepository
+import com.example.foodieme.repository.MainMainRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DeliveryPageViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class DeliveryPageViewModel  @Inject constructor (private val mainRepository: MainMainRepository,
+                                                  private  val timeDurationDao: TimeDurationDao,
+                                                  application: Application) : AndroidViewModel(application) {
 
-    private var newTime: Long? = 0L
-    private val database = getDatabase(application)
-    private val database2 = CheckoutDatabase.getInstance(application)
-    private val menuRepository = FlowsMenuRepository(database, database2)
+    //@Inject  lateinit var mainRepository: MainMainRepository
+    //@Inject  lateinit var timeDurationDao: TimeDurationDao
 
-    var cartCheckoutMenu = menuRepository.activeOrder
+
+
+    var cartCheckoutMenu = mainRepository.returnActiveOrdersInCheckOutMenu()
 
     private var prefs =
         application.getSharedPreferences(
@@ -38,7 +44,6 @@ class DeliveryPageViewModel(application: Application) : AndroidViewModel(applica
     private lateinit var timer: CountDownTimer
 
 
-    private val database3 = getDurationInstance(application)
     private val _elapsedTime = MutableLiveData<Long>()
     val elapsedTime: LiveData<Long>
         get() = _elapsedTime
@@ -48,6 +53,7 @@ class DeliveryPageViewModel(application: Application) : AndroidViewModel(applica
         get() = _alarmOn
 
 
+
     private suspend fun startTimer() {
         _alarmOn.value?.let {
             if (!it) {
@@ -55,7 +61,7 @@ class DeliveryPageViewModel(application: Application) : AndroidViewModel(applica
 
                 withContext(Dispatchers.IO) {
                     val triggerTime =
-                        SystemClock.elapsedRealtime() + database3.durationDatabaseDao.retrieveWithId(1).duration!! * second
+                        SystemClock.elapsedRealtime() + timeDurationDao.retrieveWithId(1).duration!! * second
                     saveTime(triggerTime)
                 }
                 createTimer()

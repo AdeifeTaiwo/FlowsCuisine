@@ -31,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import javax.inject.Singleton
 
 // Since we only have one service, this can all go in one file.
 // If you add more services, split this to multiple files and make sure to share the retrofit
@@ -39,28 +40,13 @@ import retrofit2.http.Query
 /**
  * A retrofit service to fetch a devbyte playlist.
  */
+@Singleton
 interface FlowsMenuService {
     @GET("tea")
 
     fun getPlaylist() : Call<List<NetworkFlowsMenu>>
 }
 
-/**
- * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
- * full Kotlin compatibility.
- */
-
-
-
-
-
-
-// and in you adapter set this instance
-
-
-/**
- * Main entry point for network access. Call like `Network.devbytes.getPlaylist()`
- */
 
 
 

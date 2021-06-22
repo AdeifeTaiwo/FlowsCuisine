@@ -11,22 +11,27 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.foodieme.R
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.databinding.AddToCartFragmentBinding
 import com.example.foodieme.databinding.CartScreenBinding
 import com.example.foodieme.databinding.HomeScreenBinding
+import com.example.foodieme.repository.MainMainRepository
 import com.example.foodieme.viewmodels.AddToCartViewModel
 import com.example.foodieme.viewmodels.AddToCartViewModelFactory
 import com.example.foodieme.viewmodels.HomeScreenViewModel
 import com.example.foodieme.viewmodels.HomeViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.cart_screen.*
+import javax.inject.Inject
 import kotlin.reflect.jvm.internal.impl.resolve.constants.DoubleValue
 
 
 @AndroidEntryPoint
 class AddToCartFragment : Fragment() {
 
-
+    @Inject
+    lateinit var mainRepository: MainMainRepository
+    @Inject  lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +46,7 @@ class AddToCartFragment : Fragment() {
 
         val application = requireNotNull(this.activity).application
 
-        val addToCartViewModelFactory = AddToCartViewModelFactory(application)
+        val addToCartViewModelFactory = AddToCartViewModelFactory(mainRepository, checkoutDatabaseDao, application)
 
         val addToCartViewModel = ViewModelProvider(this, addToCartViewModelFactory).get(
             AddToCartViewModel::class.java)

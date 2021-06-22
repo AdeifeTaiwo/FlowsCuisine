@@ -1,43 +1,46 @@
 package com.example.foodieme.viewmodels
 
 import android.app.Application
-import android.view.View
-import android.widget.Toast
+
 import androidx.lifecycle.*
-import com.example.foodieme.database.checkoutdatabase.Checkout
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
-import com.example.foodieme.database.getDatabase
+
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
+
 import com.example.foodieme.domain.CheckoutMenu
-import com.example.foodieme.repository.FlowsMenuRepository
-import com.flutterwave.raveandroid.RavePayActivity
-import com.flutterwave.raveandroid.RaveUiManager
-import com.flutterwave.raveandroid.rave_presentation.RavePayManager
+
+import com.example.foodieme.repository.MainMainRepository
+
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-
-
-class AddToCartViewModel (application: Application): AndroidViewModel(application) {
+import javax.inject.Inject
 
 
 
+class AddToCartViewModel constructor(private val mainRepository: MainMainRepository,
+                                     private val checkoutDatabaseDao: CheckoutDatabaseDao,
+                                     application: Application): AndroidViewModel(application) {
+
+
+
+    //@Inject  lateinit var mainRepository: MainMainRepository
+    //@Inject  lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
 
     var totalPrice: Double = 0.0
 
 
-    private val database = getDatabase(application)
-    private val database2 = CheckoutDatabase.getInstance(application)
-    private val menuRepository = FlowsMenuRepository(database, database2)
 
-     var checkoutPage = menuRepository.checkoutMenu
+
+     var checkoutPage = mainRepository.returnCheckOutMenu()
 
 
 
 
     init {
         viewModelScope.launch {
-            menuRepository.refreshFlowsMenu()
+            mainRepository.refreshFlowsMenu()
 
 
         }
@@ -59,8 +62,8 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
 
     private suspend fun clearWithId(key: Long){
         withContext(Dispatchers.IO){
-            if(!database2.checkoutDatabaseDao.getNightWithId(key).OrderIsActive)
-            database2.checkoutDatabaseDao.clearWithId(key)
+            if(!checkoutDatabaseDao.getNightWithId(key).OrderIsActive)
+            checkoutDatabaseDao.clearWithId(key)
 
         }
     }
@@ -94,9 +97,9 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
 
     private suspend fun updateToAddQuantity(id: Long){
         withContext(Dispatchers.IO){
-            val toAdd = database2.checkoutDatabaseDao.getNightWithId(id)
+            val toAdd = checkoutDatabaseDao.getNightWithId(id)
             toAdd.quantity += 1
-            database2.checkoutDatabaseDao.update(toAdd)
+            checkoutDatabaseDao.update(toAdd)
         }
     }
 
@@ -110,12 +113,12 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
 
     private suspend fun updateToSubtractQuantity(id: Long){
         withContext(Dispatchers.IO){
-            val toAdd = database2.checkoutDatabaseDao.getNightWithId(id)
+            val toAdd = checkoutDatabaseDao.getNightWithId(id)
 
             if(toAdd.quantity>0){
             toAdd.quantity -= 1
             }
-            database2.checkoutDatabaseDao.update(toAdd)
+            checkoutDatabaseDao.update(toAdd)
         }
     }
 
@@ -127,11 +130,11 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
     }
     private suspend fun updateState(){
         withContext(Dispatchers.IO){
-            val state = database2.checkoutDatabaseDao.getAllNightsNonLivedata()
+            val state = checkoutDatabaseDao.getAllNightsNonLivedata()
             state.forEach {
                 val eachState = it
                 eachState.OrderIsActive = true
-                database2.checkoutDatabaseDao.update(eachState)
+                checkoutDatabaseDao.update(eachState)
             }
         }
     }

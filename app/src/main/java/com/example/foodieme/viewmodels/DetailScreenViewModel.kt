@@ -3,20 +3,22 @@ package com.example.foodieme.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.foodieme.database.checkoutdatabase.Checkout
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
-import com.example.foodieme.database.getDatabase
-import com.example.foodieme.domain.CheckoutMenu
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.domain.FlowsMenu
-import com.example.foodieme.repository.FlowsMenuRepository
+import com.example.foodieme.repository.MainMainRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 import kotlin.math.abs
 
-class DetailScreenViewModel (application: Application,
-                             private  val flowsMenu: FlowsMenu,
+class DetailScreenViewModel constructor(private val mainRepository: MainMainRepository,
+                                        private val checkoutDatabaseDao: CheckoutDatabaseDao,
 
-                             ) : ViewModel() {
+                                        private  val flowsMenu: FlowsMenu, ) : ViewModel() {
+
+    //@Inject lateinit var mainRepository: MainMainRepository
+    //@Inject lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
 
 
     private var latestAddition = MutableLiveData<Checkout?>()
@@ -63,14 +65,12 @@ class DetailScreenViewModel (application: Application,
      * working with repository for the check out database
      */
 
-    private val database = getDatabase(application)
-    private val database2 = CheckoutDatabase.getInstance(application)
-    private val menuRepository = FlowsMenuRepository(database, database2)
+
 
 
     init{
         viewModelScope.launch {
-            menuRepository.refreshFlowsMenu()
+            mainRepository.refreshFlowsMenu()
 
         }
 
@@ -91,7 +91,7 @@ class DetailScreenViewModel (application: Application,
     }
 
     private suspend fun getLatestAdditonFromDatabase(): Checkout? {
-        return database2.checkoutDatabaseDao.getLatestAddition()
+        return checkoutDatabaseDao.getLatestAddition()
 
     }
 
@@ -132,13 +132,13 @@ class DetailScreenViewModel (application: Application,
 
     private suspend fun insert(checkout: Checkout){
         withContext(Dispatchers.IO){
-            database2.checkoutDatabaseDao.insert(checkout)
+            checkoutDatabaseDao.insert(checkout)
         }
     }
 
     private suspend fun update(night: Checkout) {
         withContext(Dispatchers.IO) {
-            database2.checkoutDatabaseDao.update(night)
+            checkoutDatabaseDao.update(night)
         }
     }
 
