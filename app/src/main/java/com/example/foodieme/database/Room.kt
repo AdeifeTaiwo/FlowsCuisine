@@ -23,10 +23,15 @@ interface FlowsMenuDao {
     suspend fun insertAll(vararg videos: DatabaseFlowsMenu)
 }
 
+
+
 @Database(entities = [DatabaseFlowsMenu::class], version = 1, exportSchema = false)
+
+
 abstract class FlowsMenuDatabase : RoomDatabase() {
     abstract val flowsMenuDao: FlowsMenuDao
 }
+
 
 private lateinit var INSTANCE: FlowsMenuDatabase
 

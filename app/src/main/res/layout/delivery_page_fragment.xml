@@ -19,7 +19,7 @@
         app:cardCornerRadius="20dp"
         app:cardElevation="50dp"
         android:paddingBottom="8dp"
-        app:hide_all_view="@{deliveryPageViewModel.cartCheckoutMenu}"
+
 
         >
 
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
-            app:hide_all_view="@{deliveryPageViewModel.cartCheckoutMenu}"
+
             >
 
 
@@ -89,7 +89,6 @@
                 android:layout_marginEnd="8dp"
                 android:background="#D1BBBB"
                 android:gravity="center_horizontal"
-                android:onClick="@{() -> deliveryPageViewModel.createTimer()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
@@ -106,6 +105,7 @@
                 android:layout_marginEnd="5dp"
 
                 android:background="@drawable/deliverypage_bg"
+                android:onClick="@{() -> deliveryPageViewModel.onMapScreenClicked()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:hide_linear_layout="@{deliveryPageViewModel.elapsedTime}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +146,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="13dp"
-                        android:text= "@{deliveryPageViewModel.distance.toString()}"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         tools:text="1.7km"
@@ -166,6 +165,16 @@
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/textView12"
                         app:srcCompat="@drawable/ic_baseline_edit_location_24" />
+
+                    <TextView
+                        android:id="@+id/textView18"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="9dp"
+                        android:text="Tap to View Your Delivery on Map"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
@@ -228,6 +237,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Tap the grey box below to check delivery time"
+                app:layout_constraintBottom_toTopOf="@+id/imageView3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.93"
                 app:layout_constraintStart_toStartOf="parent"
@@ -238,6 +248,8 @@
                 android:layout_width="26dp"
                 android:layout_height="23dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/textView7"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView17"
                 app:srcCompat="@android:drawable/arrow_down_float" />
@@ -245,3 +257,5 @@
     </com.google.android.material.card.MaterialCardView>
 
 </layout>
+
+

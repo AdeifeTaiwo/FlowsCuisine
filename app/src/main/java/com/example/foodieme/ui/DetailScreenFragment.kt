@@ -14,7 +14,9 @@ import com.example.foodieme.databinding.DetailscreenBinding
 import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.viewmodels.DetailScreenViewModel
 import com.example.foodieme.viewmodels.DetailScreenViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailScreenFragment  : Fragment() {
 
     override fun onCreateView(

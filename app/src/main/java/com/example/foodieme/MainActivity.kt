@@ -11,23 +11,36 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.foodieme.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.home_screen.*
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
+
         val navController = this.findNavController(R.id.myNavHostFragment)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController( binding.navView, navController)
 
-        //NavigationUI.setupWithNavController(binding.bottomNav, navController)
+
+
+
+
+
 
 
 
@@ -43,8 +56,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-
-
 
     }
 

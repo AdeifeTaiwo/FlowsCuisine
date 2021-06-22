@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodieme.R
 import com.example.foodieme.databinding.HomeScreenItemPopularBinding
 import com.example.foodieme.domain.FlowsMenu
+import javax.inject.Inject
 
-class HomeScreenAdapter (val clickListener: FlowsMenuClickListener): RecyclerView.Adapter<FlowsMenuViewHolder>(){
+class HomeScreenAdapter @Inject constructor(val clickListener: FlowsMenuClickListener): RecyclerView.Adapter<FlowsMenuViewHolder>(){
 
     var popular: List<FlowsMenu> = emptyList()
     set(value) {

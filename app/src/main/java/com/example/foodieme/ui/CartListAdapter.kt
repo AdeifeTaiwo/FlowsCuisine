@@ -9,8 +9,9 @@ import com.example.foodieme.R
 
 import com.example.foodieme.databinding.ListRecyclerViewBinding
 import com.example.foodieme.domain.CheckoutMenu
+import javax.inject.Inject
 
-class CartListAdapter: RecyclerView.Adapter<MyViewHolder>(){
+class CartListAdapter @Inject constructor(): RecyclerView.Adapter<MyViewHolder>(){
 
     var checkoutMenu: List<CheckoutMenu> = emptyList()
         set(value) {

@@ -46,12 +46,23 @@
         android:id="@+id/addToCartFragment"
         android:name="com.example.foodieme.ui.AddToCartFragment"
         android:label="AddToCartFragment"
-        tools:layout="@layout/add_to_cart_fragment"/>
+        tools:layout="@layout/add_to_cart_fragment">
+        <action
+            android:id="@+id/action_addToCartFragment_to_deliveryPageFragment"
+            app:destination="@id/deliveryPageFragment" />
+    </fragment>
     <fragment
         android:id="@+id/deliveryPageFragment"
         android:name="com.example.foodieme.ui.DeliveryPageFragment"
         android:label="DeliveryPageFragment"
-        tools:layout="@layout/delivery_page_fragment"/>
+        tools:layout="@layout/delivery_page_fragment">
+        <action
+            android:id="@+id/action_deliveryPageFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <argument
+            android:name="orderingInProgress"
+            app:argType="com.example.foodieme.domain.CheckoutMenu[]" />
+    </fragment>
     <activity
         android:id="@+id/flutterWave"
         android:name="com.example.foodieme.FlutterWave"

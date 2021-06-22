@@ -147,7 +147,7 @@ class DetailScreenViewModel (application: Application,
     val navigateToAddToCartScreen : LiveData<Boolean?>
         get() = _navigateToAddToCartScreen
 
-    fun onDetailScreenClicked() {
+    private fun onDetailScreenClicked() {
         _navigateToAddToCartScreen.value = true
     }
 

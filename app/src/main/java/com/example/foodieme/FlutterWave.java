@@ -32,7 +32,7 @@ public class FlutterWave extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_flutter_wave);
 
         btnOne = findViewById(R.id.btn_one);
 
@@ -58,6 +58,7 @@ public class FlutterWave extends AppCompatActivity  {
                 .setPublicKey(publicKey)
                 .setEncryptionKey(encryptionKey)
                 .setTxRef(txRef)
+
                     .acceptAccountPayments(true)
                     .acceptCardPayments(true)
                     .acceptMpesaPayments(true)
@@ -69,9 +70,7 @@ public class FlutterWave extends AppCompatActivity  {
                     .acceptBankTransferPayments(true)
                     .acceptUssdPayments(false)
                     .acceptBarterPayments(false)
-
-                    .allowSaveCardFeature(true)
-                .shouldDisplayFee(true)
+                    .shouldDisplayFee(true)
                     .initialize();
     }
 

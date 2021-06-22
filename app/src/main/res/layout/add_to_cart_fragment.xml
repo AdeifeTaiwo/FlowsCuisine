@@ -145,6 +145,7 @@
             android:layout_marginTop="11dp"
             android:background="@drawable/ovalcircletotal"
             android:gravity="center"
+            android:onClick="@{() -> cartViewModel.onOrderScreenClicked(cartViewModel.checkoutPage)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/textView8">

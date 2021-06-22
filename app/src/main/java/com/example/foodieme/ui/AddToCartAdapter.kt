@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodieme.R
 import com.example.foodieme.databinding.CartScreenBinding
 import com.example.foodieme.domain.CheckoutMenu
+import javax.inject.Inject
 
-class AddToCartAdapter (val clickListener: AddToCartClickListener,
-                        val addToQuantityClickListener: AddToQuantityClickListener,
-                        val subtractFromQuantityClickListener: SubtractFromQuantityClickListener) :RecyclerView.Adapter<AllItemViewHolder>(){
+class AddToCartAdapter @Inject constructor(
+    private val clickListener: AddToCartClickListener,
+    private val addToQuantityClickListener: AddToQuantityClickListener,
+    private val subtractFromQuantityClickListener: SubtractFromQuantityClickListener) :RecyclerView.Adapter<AllItemViewHolder>(){
 
     var checkoutMenu: List<CheckoutMenu> = emptyList()
         set(value) {

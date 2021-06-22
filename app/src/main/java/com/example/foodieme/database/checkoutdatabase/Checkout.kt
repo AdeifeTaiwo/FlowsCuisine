@@ -7,8 +7,9 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.example.foodieme.domain.CheckoutMenu
 
-@Entity( indices = [Index(value = ["image_url", "name"], unique = true)],  tableName = "check_out_page_table" )
 
+
+@Entity( indices = [Index(value = ["image_url", "name"], unique = true)],  tableName = "check_out_page_table" )
 
 data class Checkout(
     @PrimaryKey(autoGenerate = true)
@@ -31,8 +32,12 @@ data class Checkout(
     var name: String = "th",
 
     @ColumnInfo(name = "duration")
-    var duration: Long = 0L
+    var duration: Long = 0L,
+
+    @ColumnInfo(name = "orderIsActive")
+    var OrderIsActive: Boolean = false
 )
+
 
 fun List<Checkout>.asDomainModel(): List<CheckoutMenu>{
     return map{
@@ -42,8 +47,9 @@ fun List<Checkout>.asDomainModel(): List<CheckoutMenu>{
             priceInfo = it.priceInfo,
             weight = it.weight,
             quantity = it.quantity,
-            name = it.name
-
+            name = it.name,
+            duration =  it.duration,
+            isActive = it.OrderIsActive
         )
     }
 }

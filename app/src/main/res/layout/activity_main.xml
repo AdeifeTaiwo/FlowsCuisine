@@ -67,13 +67,13 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:background="@color/cardview_light_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_nav_menu"
-            tools:layout_editor_absoluteX="72dp" />
-
+            tools:layout_editor_absoluteX="72dp"
+            app:layout_behavior="com.google.android.material.bottomappbar.BottomAppBar$Behavior"/>
 
 
     </LinearLayout>

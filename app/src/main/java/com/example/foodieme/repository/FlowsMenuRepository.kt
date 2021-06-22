@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.room.CoroutinesRoom
 import com.example.foodieme.database.FlowsMenuDatabase;
 import com.example.foodieme.database.asDomainModel
+import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
 import com.example.foodieme.database.checkoutdatabase.asDomainModel
 import com.example.foodieme.domain.CheckoutMenu
@@ -23,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database2: CheckoutDatabase) {
+class FlowsMenuRepository (private val database: FlowsMenuDatabase, private val database2: CheckoutDatabase) {
 
 
 
@@ -41,6 +42,16 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database
     val checkoutMenu: LiveData<List<CheckoutMenu>> = Transformations.map(database2.checkoutDatabaseDao.getAllNights()){
         it.asDomainModel()
     }
+
+    val activeOrder: LiveData<List<CheckoutMenu>> = Transformations.map(database2.checkoutDatabaseDao.getActiveOrders(true)){
+        it.asDomainModel()
+    }
+
+
+
+
+
+
 
 
 
@@ -100,3 +111,6 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, val database
 
 
     }
+
+
+

@@ -7,7 +7,7 @@ import com.example.foodieme.domain.CheckoutMenu
 
 @Dao
 interface CheckoutDatabaseDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(night: Checkout)
 
     /**
@@ -43,4 +43,8 @@ interface CheckoutDatabaseDao {
 
     @Query("DELETE FROM check_out_page_table WHERE checkOutId = :key")
     suspend fun clearWithId(key: Long)
+
+    @Query("SELECT * FROM check_out_page_table WHERE orderIsActive =:bool")
+    fun getActiveOrders(bool: Boolean): LiveData<List<Checkout>>
+
 }

@@ -49,18 +49,13 @@ interface FlowsMenuService {
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for
  * full Kotlin compatibility.
  */
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
+
 
 
 
 
 
 // and in you adapter set this instance
-
-
-
 
 
 /**
@@ -79,7 +74,7 @@ object Network {
 
         .build()
 
-    val retrofitService = retrofit.create(FlowsMenuService::class.java)
+    val retrofitService: FlowsMenuService = retrofit.create(FlowsMenuService::class.java)
 }
 
 

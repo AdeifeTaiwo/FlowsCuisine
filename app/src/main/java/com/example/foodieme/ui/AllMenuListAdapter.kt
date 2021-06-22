@@ -11,7 +11,7 @@ import com.example.foodieme.R
 import com.example.foodieme.databinding.HomeScreenItemAllBinding
 import com.example.foodieme.domain.FlowsMenu
 
-class AllMenuListAdapter (val clickListener: MenuClickListener) :RecyclerView.Adapter<AllItemViewHolder>(){
+class AllMenuListAdapter (private val clickListener: MenuClickListener) :RecyclerView.Adapter<AllItemViewHolder>(){
 
     var allItem : List<FlowsMenu> = emptyList()
     set(value) {

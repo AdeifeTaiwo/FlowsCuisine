@@ -1,8 +1,6 @@
 package com.example.foodieme.domain
 
 import android.os.Parcelable
-import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -29,6 +27,15 @@ data class CheckoutMenu(
     val priceInfo: Double,
     val weight: String,
     val quantity: Int,
-    val name: String
-
+    val name: String,
+    val duration: Long,
+    val isActive: Boolean
 ) : Parcelable
+
+
+@Parcelize
+data class TimeDistance(
+    val id: Long,
+    val duration: Long,
+    val distance: String
+): Parcelable

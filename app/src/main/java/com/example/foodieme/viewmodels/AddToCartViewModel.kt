@@ -2,10 +2,12 @@ package com.example.foodieme.viewmodels
 
 import android.app.Application
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
 import com.example.foodieme.database.getDatabase
+import com.example.foodieme.domain.CheckoutMenu
 import com.example.foodieme.repository.FlowsMenuRepository
 import com.flutterwave.raveandroid.RavePayActivity
 import com.flutterwave.raveandroid.RaveUiManager
@@ -57,6 +59,7 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
 
     private suspend fun clearWithId(key: Long){
         withContext(Dispatchers.IO){
+            if(!database2.checkoutDatabaseDao.getNightWithId(key).OrderIsActive)
             database2.checkoutDatabaseDao.clearWithId(key)
 
         }
@@ -88,6 +91,7 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
         }
 
     }
+
     private suspend fun updateToAddQuantity(id: Long){
         withContext(Dispatchers.IO){
             val toAdd = database2.checkoutDatabaseDao.getNightWithId(id)
@@ -103,6 +107,7 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
         }
 
     }
+
     private suspend fun updateToSubtractQuantity(id: Long){
         withContext(Dispatchers.IO){
             val toAdd = database2.checkoutDatabaseDao.getNightWithId(id)
@@ -114,11 +119,61 @@ class AddToCartViewModel (application: Application): AndroidViewModel(applicatio
         }
     }
 
-    fun onCheckoutClick(view : View){
+
+    private fun updateTheState(){
+        viewModelScope.launch {
+            updateState()
+        }
+    }
+    private suspend fun updateState(){
+        withContext(Dispatchers.IO){
+            val state = database2.checkoutDatabaseDao.getAllNightsNonLivedata()
+            state.forEach {
+                val eachState = it
+                eachState.OrderIsActive = true
+                database2.checkoutDatabaseDao.update(eachState)
+            }
+        }
+    }
 
 
 
-        
+    private val _navigateToToast = MutableLiveData<Boolean?>()
+
+    val navigateToToast: LiveData<Boolean?>
+    get() = _navigateToToast
+
+    private fun navigateToToast(){
+        _navigateToToast.value = true
+    }
+
+    fun onToastNavigated(){
+        _navigateToToast.value = null
+    }
+
+    private val _navigateToOrderScreen = MutableLiveData<List<CheckoutMenu?>?>()
+
+    val navigateToAddToOrderScreen : LiveData<List<CheckoutMenu?>?>
+        get() = _navigateToOrderScreen
+
+    fun onOrderScreenClicked(menu: List<CheckoutMenu>) {
+
+        if(menu.isNotEmpty()) {
+            //if last order isn't active yet, update it to be active
+            if (!menu.last().isActive) {
+                updateTheState()
+                _navigateToOrderScreen.value = menu
+            }
+            else {
+                navigateToToast()
+            }
+        }
+
+
+    }
+
+    fun onOrderScreenNavigated() {
+        _navigateToOrderScreen.value = null
     }
 
 
