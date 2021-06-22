@@ -25,26 +25,11 @@ interface FlowsMenuDao {
 
 
 
-@Database(entities = [DatabaseFlowsMenu::class], version = 1, exportSchema = false)
 
+@Database(entities = [DatabaseFlowsMenu::class], version = 1, exportSchema = false)
 
 abstract class FlowsMenuDatabase : RoomDatabase() {
     abstract val flowsMenuDao: FlowsMenuDao
 }
 
 
-private lateinit var INSTANCE: FlowsMenuDatabase
-
-fun getDatabase(context: Context): FlowsMenuDatabase {
-
-
-    synchronized(FlowsMenuDatabase::class.java) {
-        if (!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(context.applicationContext,
-                FlowsMenuDatabase::class.java,
-                "videos").fallbackToDestructiveMigration()
-                .build()
-        }
-    }
-    return INSTANCE
-}

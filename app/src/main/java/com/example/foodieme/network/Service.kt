@@ -62,19 +62,6 @@ interface FlowsMenuService {
  * Main entry point for network access. Call like `Network.devbytes.getPlaylist()`
  */
 
-object Network {
-    // Configure retrofit to parse JSON and use coroutines
 
-
-    private val retrofit = Retrofit.Builder()
-
-        .baseUrl("http://stark-headland-26585.herokuapp.com/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-
-        .build()
-
-    val retrofitService: FlowsMenuService = retrofit.create(FlowsMenuService::class.java)
-}
 
 

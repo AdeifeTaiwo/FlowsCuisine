@@ -4,14 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.room.CoroutinesRoom
+import com.example.foodieme.database.FlowsMenuDao
 import com.example.foodieme.database.FlowsMenuDatabase;
 import com.example.foodieme.database.asDomainModel
 import com.example.foodieme.database.checkoutdatabase.Checkout
 import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.database.checkoutdatabase.asDomainModel
 import com.example.foodieme.domain.CheckoutMenu
 import com.example.foodieme.domain.FlowsMenu
-import com.example.foodieme.network.Network
+import com.example.foodieme.network.FlowsMenuService
 import com.example.foodieme.network.NetworkFlowsMenu
 import com.example.foodieme.network.asDatabaseModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,37 +22,36 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FlowsMenuRepository (private val database: FlowsMenuDatabase, private val database2: CheckoutDatabase) {
+
+class FlowsMenuRepository @Inject constructor( private val flowsMenuDao: FlowsMenuDao,
+                                               private val checkoutDatabaseDao: CheckoutDatabaseDao,
+                                               private val service: FlowsMenuService) {
 
 
 
-    val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(database.flowsMenuDao.getFlowsMenu()){
+    val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getFlowsMenu()){
         it.asDomainModel()
     }
 
-    val popularFlowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(database.flowsMenuDao.getPopularFlowsMenu("popular")) {
+    val popularFlowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getPopularFlowsMenu("popular")) {
         it.asDomainModel()
 
     }
 
     //checkout adapter data
     // TODO: TO BE SOON IMPLEMENTED
-    val checkoutMenu: LiveData<List<CheckoutMenu>> = Transformations.map(database2.checkoutDatabaseDao.getAllNights()){
+    val checkoutMenu: LiveData<List<CheckoutMenu>> = Transformations.map(checkoutDatabaseDao.getAllNights()){
         it.asDomainModel()
     }
 
-    val activeOrder: LiveData<List<CheckoutMenu>> = Transformations.map(database2.checkoutDatabaseDao.getActiveOrders(true)){
+    val activeOrder: LiveData<List<CheckoutMenu>> = Transformations.map(checkoutDatabaseDao.getActiveOrders(true)){
         it.asDomainModel()
     }
-
-
-
-
-
 
 
 
@@ -60,7 +61,7 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, private val 
 
         return when(filter) {
             null -> flowsMenu
-            else -> Transformations.map(database.flowsMenuDao.getSnackFlowsMenu(filter)) {
+            else -> Transformations.map(flowsMenuDao.getSnackFlowsMenu(filter)) {
                 it.asDomainModel()
             }
         }
@@ -68,23 +69,9 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, private val 
 
 
 
-
-
-
-
-
-
-
-
-
-    val _getDatabase = MutableLiveData<List<NetworkFlowsMenu>>()
-    val getDatabase : LiveData<List<NetworkFlowsMenu>>
-    get() = _getDatabase
-
-
     suspend fun refreshFlowsMenu(){
 
-            val call = Network.retrofitService.getPlaylist()
+            val call = service.getPlaylist()
                     val response = suspendCoroutine<Response<List<NetworkFlowsMenu>>>{ continuation ->
                         call. enqueue(object : Callback<List<NetworkFlowsMenu>> {
 
@@ -103,7 +90,7 @@ class FlowsMenuRepository (private val database: FlowsMenuDatabase, private val 
                 val newList = response.body()?.asDatabaseModel()
                 if(newList!= null){
                     withContext(Dispatchers.IO){
-                        database.flowsMenuDao.insertAll(*newList)
+                        flowsMenuDao.insertAll(*newList)
                     }
                 }
 
