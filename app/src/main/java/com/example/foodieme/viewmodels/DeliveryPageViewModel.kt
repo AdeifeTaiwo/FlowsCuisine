@@ -4,13 +4,9 @@ import android.app.Application
 import android.content.Context
 import android.os.CountDownTimer
 import android.os.SystemClock
-import android.provider.Settings
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.foodieme.database.checkoutdatabase.CheckoutDatabase
 import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 
-import com.example.foodieme.repository.FlowsMenuRepository
 import com.example.foodieme.repository.MainMainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,13 +15,11 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class DeliveryPageViewModel  @Inject constructor (private val mainRepository: MainMainRepository,
-                                                  private  val timeDurationDao: TimeDurationDao,
-                                                  application: Application) : AndroidViewModel(application) {
-
-    //@Inject  lateinit var mainRepository: MainMainRepository
-    //@Inject  lateinit var timeDurationDao: TimeDurationDao
-
+class DeliveryPageViewModel @Inject constructor(
+    private val mainRepository: MainMainRepository,
+    private val timeDurationDao: TimeDurationDao,
+    application: Application
+) : AndroidViewModel(application) {
 
 
     var cartCheckoutMenu = mainRepository.returnActiveOrdersInCheckOutMenu()
@@ -35,10 +29,9 @@ class DeliveryPageViewModel  @Inject constructor (private val mainRepository: Ma
             "com.example.android.eggtimernotifications",
             Context.MODE_PRIVATE
         )
-    private val REQUEST_CODE = 0
-    private val TRIGGER_TIME = "TRIGGER_AT"
-    private val TRIGGER_TIME2 = "TRIGGER_AT2"
 
+
+    private val TRIGGER_TIME = "TRIGGER_AT"
     private val minute: Long = 60_000L
     private val second: Long = 1_000L
     private lateinit var timer: CountDownTimer
@@ -48,40 +41,58 @@ class DeliveryPageViewModel  @Inject constructor (private val mainRepository: Ma
     val elapsedTime: LiveData<Long>
         get() = _elapsedTime
 
-    private var _alarmOn = MutableLiveData<Boolean>(false)
-    val isAlarmOn: LiveData<Boolean>
+    private var _alarmOn = MutableLiveData<Boolean?>()
+    val isAlarmOn: LiveData<Boolean?>
         get() = _alarmOn
 
 
-
     private suspend fun startTimer() {
-        _alarmOn.value?.let {
-            if (!it) {
-                _alarmOn.value = true
+
+
+            if (returnAlarmStatus() == false) {
+                updateAlarm(true)
 
                 withContext(Dispatchers.IO) {
                     val triggerTime =
                         SystemClock.elapsedRealtime() + timeDurationDao.retrieveWithId(1).duration!! * second
                     saveTime(triggerTime)
                 }
-                createTimer()
+
             }
 
+
+        createTimer()
+
+    }
+
+    private suspend fun returnAlarmStatus(): Boolean? {
+
+        if (timeDurationDao.getLatestAddition() != null) {
+            return withContext(Dispatchers.IO) {
+                timeDurationDao.retrieveWithId(1).isAlarmOn
+            }
+        }
+        return true
+
+    }
+
+    private suspend fun updateAlarm(setValue: Boolean) {
+        withContext(Dispatchers.IO) {
+            if (timeDurationDao.getLatestAddition() != null) {
+                val updateAlarm = timeDurationDao.retrieveWithId(1)
+                updateAlarm.isAlarmOn = setValue
+                timeDurationDao.update(updateAlarm)
+            }
         }
 
-
-        Log.e("timer", "timerStarted")
     }
 
 
     init {
 
-
-
-            viewModelScope.launch {
-                startTimer()
-            }
-
+        viewModelScope.launch {
+            startTimer()
+        }
 
 
     }
@@ -89,11 +100,9 @@ class DeliveryPageViewModel  @Inject constructor (private val mainRepository: Ma
 
     private fun createTimer() {
 
-        Log.e("timer", "timerStarted")
-
         viewModelScope.launch {
             val triggerTime = loadTime()
-            Log.e("time", loadTime().toString())
+
 
             timer = object : CountDownTimer(triggerTime, second) {
                 override fun onTick(millisUntilFinished: Long) {
@@ -108,17 +117,14 @@ class DeliveryPageViewModel  @Inject constructor (private val mainRepository: Ma
                 }
             }
             timer.start()
-
-            Log.e("triggertime", triggerTime.toString())
         }
-
     }
 
     private fun resetTimer() {
         viewModelScope.launch {
             timer.cancel()
             _elapsedTime.value = 0
-            _alarmOn.value = false
+            updateAlarm(false)
         }
     }
 

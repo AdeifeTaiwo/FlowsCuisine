@@ -13,7 +13,7 @@ interface TimeDurationDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(night: TimeAndDuration)
 
-    @Query("SELECT * FROM time_duration_database ORDER BY id DESC LIMIT 1")
+    @Query("SELECT * FROM time_duration_database ORDER BY id ASC LIMIT 1")
     suspend fun getLatestAddition(): TimeAndDuration?
 
     @Query("SELECT * from time_duration_database WHERE id = :key")

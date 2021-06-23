@@ -34,30 +34,6 @@ class FlowsMenuRepository @Inject constructor() : MainMainRepository {
     @Inject lateinit var  service: FlowsMenuService
 
 
-    /**val flowsMenu: LiveData<List<FlowsMenu>> = Transformations.map(flowsMenuDao.getFlowsMenu()) {
-        it.asDomainModel()
-    }
-
-    val popularFlowsMenu: LiveData<List<FlowsMenu>> =
-        Transformations.map(flowsMenuDao.getPopularFlowsMenu("popular")) {
-            it.asDomainModel()
-
-        }
-
-    //checkout adapter data
-
-    val checkoutMenu: LiveData<List<CheckoutMenu>> =
-        Transformations.map(checkoutDatabaseDao.getAllNights()) {
-            it.asDomainModel()
-        }
-
-
-    val activeOrder: LiveData<List<CheckoutMenu>> =
-        Transformations.map(checkoutDatabaseDao.getActiveOrders(true)) {
-            it.asDomainModel()
-        }
-
-    **/
 
 
     override fun getFlowMenuByCategory(filter: String?): LiveData<List<FlowsMenu>> {

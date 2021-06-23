@@ -17,8 +17,6 @@ import javax.inject.Singleton
 class ServiceModule {
 
 
-
-
     @Provides
     @Singleton
     fun provideApiService(): FlowsMenuService {

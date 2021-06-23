@@ -48,10 +48,6 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
     val popularFlowsMenu = mainRepository.returnPopularFlowMenu()
 
 
-
-
-
-
     fun onQueryChanged(filter: String?) : LiveData<List<FlowsMenu>>{
        return mainRepository.getFlowMenuByCategory(filter)
     }
@@ -74,27 +70,32 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
 
 
     private suspend fun getLatestAdditonFromDatabase(): TimeAndDuration? {
+
+        if(durationDao.getLatestAddition() == null) {
+            val newCheckOut = TimeAndDuration()
+            insert(newCheckOut)
+        }
+
         return durationDao.getLatestAddition()
 
     }
 
     fun setDurationAndDistance(duration: Long, distance: String) {
         _duration.value = duration
-        Log.e("view", _duration.value.toString())
         _distance.value = distance
-
         initializeLatest(duration, distance)
+
     }
 
 
 
     private fun initializeLatest(duration: Long, distance: String) {
+
         viewModelScope.launch {
 
-                val newCheckOut = TimeAndDuration()
-                insert(newCheckOut)
+                //val newCheckOut = TimeAndDuration()
+                //insert(newCheckOut)
                 latestAddition.value = getLatestAdditonFromDatabase()
-
                 onUpdateToCart(duration, distance)
         }
     }

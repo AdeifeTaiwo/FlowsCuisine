@@ -15,6 +15,10 @@ data class TimeAndDuration(
     var duration: Long? = 0L,
 
     @ColumnInfo(name = "distance")
-    var distance: String? = ""
+    var distance: String? = "",
+
+    @ColumnInfo(name = "isAlarmOn")
+    var isAlarmOn: Boolean? = false
+
 )
 
