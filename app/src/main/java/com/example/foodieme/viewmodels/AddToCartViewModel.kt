@@ -25,9 +25,6 @@ class AddToCartViewModel constructor(private val mainRepository: MainMainReposit
 
 
 
-    //@Inject  lateinit var mainRepository: MainMainRepository
-    //@Inject  lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
-
     var totalPrice: Double = 0.0
 
 
@@ -66,6 +63,7 @@ class AddToCartViewModel constructor(private val mainRepository: MainMainReposit
             checkoutDatabaseDao.clearWithId(key)
 
         }
+        
     }
 
     fun totalPrice2() =Transformations.map(checkoutPage){

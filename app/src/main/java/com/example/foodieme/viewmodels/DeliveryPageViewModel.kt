@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.CountDownTimer
 import android.os.SystemClock
 import androidx.lifecycle.*
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 
 import com.example.foodieme.repository.MainMainRepository
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class DeliveryPageViewModel @Inject constructor(
     private val mainRepository: MainMainRepository,
     private val timeDurationDao: TimeDurationDao,
+    private val checkoutDatabaseDao: CheckoutDatabaseDao,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -87,6 +89,12 @@ class DeliveryPageViewModel @Inject constructor(
 
     }
 
+    private suspend fun clearCheckOutMenuWhenDone(){
+        withContext(Dispatchers.IO){
+           checkoutDatabaseDao.clear()
+        }
+    }
+
 
     init {
 
@@ -125,6 +133,7 @@ class DeliveryPageViewModel @Inject constructor(
             timer.cancel()
             _elapsedTime.value = 0
             updateAlarm(false)
+            clearCheckOutMenuWhenDone()
         }
     }
 

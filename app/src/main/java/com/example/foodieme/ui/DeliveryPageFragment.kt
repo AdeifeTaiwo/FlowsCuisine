@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.example.foodieme.R
+import com.example.foodieme.database.checkoutdatabase.CheckoutDatabaseDao
 import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 import com.example.foodieme.databinding.DeliveryPageFragmentBinding
 import com.example.foodieme.network.map.DirectionResponses
@@ -40,16 +41,16 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DeliveryPageFragment : Fragment() {
 
-    @Inject
-    lateinit var adapter: CartListAdapter
+    @Inject lateinit var adapter: CartListAdapter
     @Inject  lateinit var mainRepository: MainMainRepository
     @Inject  lateinit var timeDurationDao: TimeDurationDao
+    @Inject lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
 
 
 
     private val viewModel: DeliveryPageViewModel by lazy {
         val application = requireNotNull(this.activity).application
-        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(mainRepository, timeDurationDao, application)
+        val deliveryPageViewModelFactory =  DeliveryPageViewModelFactory(mainRepository, timeDurationDao, checkoutDatabaseDao, application)
 
         ViewModelProvider(this, deliveryPageViewModelFactory).get(DeliveryPageViewModel::class.java)
     }
