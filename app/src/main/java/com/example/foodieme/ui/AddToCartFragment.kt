@@ -42,8 +42,6 @@ class AddToCartFragment : Fragment() {
             inflater, R.layout.add_to_cart_fragment, container, false)
 
 
-        var totalItemPrice : Double =2.0
-
         val application = requireNotNull(this.activity).application
 
         val addToCartViewModelFactory = AddToCartViewModelFactory(mainRepository, checkoutDatabaseDao, application)

@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -143,6 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="11dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/ovalcircletotal"
             android:gravity="center"
             android:onClick="@{() -> cartViewModel.onOrderScreenClicked(cartViewModel.checkoutPage)}"

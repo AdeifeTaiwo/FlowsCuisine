@@ -12,10 +12,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.abs
 
-class DetailScreenViewModel constructor(private val mainRepository: MainMainRepository,
-                                        private val checkoutDatabaseDao: CheckoutDatabaseDao,
+class DetailScreenViewModel constructor(
+    private val mainRepository: MainMainRepository,
+    private val checkoutDatabaseDao: CheckoutDatabaseDao,
 
-                                        private  val flowsMenu: FlowsMenu, ) : ViewModel() {
+    private val flowsMenu: FlowsMenu,
+) : ViewModel() {
 
     //@Inject lateinit var mainRepository: MainMainRepository
     //@Inject lateinit var checkoutDatabaseDao: CheckoutDatabaseDao
@@ -24,11 +26,10 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
     private var latestAddition = MutableLiveData<Checkout?>()
 
 
-
     private val _price = MutableLiveData<Double>()
 
     val price: LiveData<Double>
-    get() = _price
+        get() = _price
 
 
     private val _quantity = MutableLiveData<Int>()
@@ -39,8 +40,8 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
 
     private val _selectedMenu = MutableLiveData<FlowsMenu>()
 
-    val selectedMenu : LiveData<FlowsMenu>
-    get() = _selectedMenu
+    val selectedMenu: LiveData<FlowsMenu>
+        get() = _selectedMenu
 
     init {
         _selectedMenu.value = flowsMenu
@@ -48,13 +49,13 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
         _quantity.value = 1
     }
 
-    fun add(){
+    fun add() {
         _quantity.value = (_quantity.value)?.plus(1)?.let { Math.abs(it) }
         _price.value = _quantity.value?.times(flowsMenu.price!!)
     }
 
 
-    fun remove(){
+    fun remove() {
         _quantity.value = (_quantity.value)?.minus(1)?.let { abs(it) }
         _price.value = flowsMenu.price?.let { _quantity.value?.times(it) }
 
@@ -66,9 +67,7 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
      */
 
 
-
-
-    init{
+    init {
         viewModelScope.launch {
             mainRepository.refreshFlowsMenu()
 
@@ -81,10 +80,7 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
     }
 
 
-
-
-
-    private fun initializeLatestAddition(){
+    private fun initializeLatestAddition() {
         viewModelScope.launch {
             latestAddition.value = getLatestAdditonFromDatabase()
         }
@@ -96,7 +92,7 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
     }
 
 
-    fun addToCartButton(){
+    fun addToCartButton() {
         viewModelScope.launch {
             if (_quantity.value!! >= 1) {
                 val newCheckOut = Checkout()
@@ -112,26 +108,26 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
 
     private fun onUpdateToCart() {
 
-            viewModelScope.launch {
+        viewModelScope.launch {
 
-                val toCart = latestAddition.value ?: return@launch
+            val toCart = latestAddition.value ?: return@launch
 
-                toCart.imageUrl = flowsMenu.image!!
-                toCart.priceInfo = flowsMenu.price!!
-                toCart.weight = "220Kg"
-                toCart.quantity = _quantity.value!!
-                toCart.name = flowsMenu.name!!
+            toCart.imageUrl = flowsMenu.image!!
+            toCart.priceInfo = flowsMenu.price!!
+            toCart.weight = "220Kg"
+            toCart.quantity = _quantity.value!!
+            toCart.name = flowsMenu.name!!
 
-                update(toCart)
+            update(toCart)
 
-                onDetailScreenClicked()
+            onDetailScreenClicked()
 
-            }
+        }
 
     }
 
-    private suspend fun insert(checkout: Checkout){
-        withContext(Dispatchers.IO){
+    private suspend fun insert(checkout: Checkout) {
+        withContext(Dispatchers.IO) {
             checkoutDatabaseDao.insert(checkout)
         }
     }
@@ -144,7 +140,7 @@ class DetailScreenViewModel constructor(private val mainRepository: MainMainRepo
 
     private val _navigateToAddToCartScreen = MutableLiveData<Boolean?>()
 
-    val navigateToAddToCartScreen : LiveData<Boolean?>
+    val navigateToAddToCartScreen: LiveData<Boolean?>
         get() = _navigateToAddToCartScreen
 
     private fun onDetailScreenClicked() {

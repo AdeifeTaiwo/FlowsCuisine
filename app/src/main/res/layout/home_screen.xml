@@ -11,13 +11,26 @@
     </data>
 
 
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/homeScreenConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:orientation="vertical">
+
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="0dp"
         tools:context=".ui.HomeScreenFragment">
 
+
+
+
         <TextView
+            android:id="@+id/popularTextView"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,7 +38,6 @@
             android:layout_marginTop="16dp"
             android:textColor="#FF953A"
             android:text="Popular"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,7 +77,7 @@
 
         </HorizontalScrollView>
 
-        <androidx.core.widget.NestedScrollView
+        <!--androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/layout_bg"
@@ -75,42 +87,32 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/horizontal">
+            app:layout_constraintTop_toBottomOf="@id/horizontal"-->
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/category_all_MenuList"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 android:clipToPadding="true"
+                android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/horizontal"
+                tools:itemCount="4"
                 tools:listitem="@layout/home_screen_item_all" />
 
-        </androidx.core.widget.NestedScrollView>
+
+        <!--/androidx.core.widget.NestedScrollView-->
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_nav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/cardview_light_background"
-            android:layout_gravity="start"
-            app:menu="@menu/bottom_nav_menu"
-            app:labelVisibilityMode="labeled"
-
-            tools:layout_editor_absoluteX="72dp" />
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 
 

@@ -1,29 +1,31 @@
 package com.example.foodieme.viewmodels
 
 import android.app.Application
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.work.*
 import com.example.foodieme.database.timedurationdatabase.TimeAndDuration
 import com.example.foodieme.database.timedurationdatabase.TimeDurationDao
 import com.example.foodieme.domain.FlowsMenu
 import com.example.foodieme.repository.MainMainRepository
+import com.example.foodieme.work.LocationWorker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor( private val mainRepository: MainMainRepository,
-                                               private val durationDao: TimeDurationDao,
-                                               application: Application) : AndroidViewModel(application) {
-
-
-
-
+class HomeScreenViewModel @Inject constructor(
+    private val mainRepository: MainMainRepository,
+    private val durationDao: TimeDurationDao,
+    application: Application
+) : AndroidViewModel(application) {
 
 
     private var latestAddition = MutableLiveData<TimeAndDuration?>()
@@ -36,9 +38,7 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
         get() = _duration
 
 
-
-
-    init{
+    init {
         viewModelScope.launch {
             mainRepository.refreshFlowsMenu()
         }
@@ -48,14 +48,14 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
     val popularFlowsMenu = mainRepository.returnPopularFlowMenu()
 
 
-    fun onQueryChanged(filter: String?) : LiveData<List<FlowsMenu>>{
-       return mainRepository.getFlowMenuByCategory(filter)
+    fun onQueryChanged(filter: String?): LiveData<List<FlowsMenu>> {
+        return mainRepository.getFlowMenuByCategory(filter)
     }
 
 
     private val _navigateToDetailScreen = MutableLiveData<FlowsMenu?>()
 
-    val navigateToDetailScreen : LiveData<FlowsMenu?>
+    val navigateToDetailScreen: LiveData<FlowsMenu?>
         get() = _navigateToDetailScreen
 
     fun onDetailScreenClicked(flowsMenu: FlowsMenu) {
@@ -67,11 +67,9 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
     }
 
 
-
-
     private suspend fun getLatestAdditonFromDatabase(): TimeAndDuration? {
 
-        if(durationDao.getLatestAddition() == null) {
+        if (durationDao.getLatestAddition() == null) {
             val newCheckOut = TimeAndDuration()
             insert(newCheckOut)
         }
@@ -88,15 +86,14 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
     }
 
 
-
     private fun initializeLatest(duration: Long, distance: String) {
 
         viewModelScope.launch {
 
-                //val newCheckOut = TimeAndDuration()
-                //insert(newCheckOut)
-                latestAddition.value = getLatestAdditonFromDatabase()
-                onUpdateToCart(duration, distance)
+            //val newCheckOut = TimeAndDuration()
+            //insert(newCheckOut)
+            latestAddition.value = getLatestAdditonFromDatabase()
+            onUpdateToCart(duration, distance)
         }
     }
 
@@ -113,17 +110,13 @@ class HomeScreenViewModel @Inject constructor( private val mainRepository: MainM
 
     }
 
-    private suspend fun update(night: TimeAndDuration) {
-        withContext(Dispatchers.IO) {
-            durationDao.update(night)
-        }
-    }
 
-    private suspend fun insert(checkout: TimeAndDuration){
-        withContext(Dispatchers.IO){
+    private suspend fun insert(checkout: TimeAndDuration) {
+        withContext(Dispatchers.IO) {
             durationDao.insert(checkout)
         }
     }
+
 
 
 

@@ -27,9 +27,6 @@ class AddToCartViewModel constructor(private val mainRepository: MainMainReposit
 
     var totalPrice: Double = 0.0
 
-
-
-
      var checkoutPage = mainRepository.returnCheckOutMenu()
 
 
@@ -38,8 +35,6 @@ class AddToCartViewModel constructor(private val mainRepository: MainMainReposit
     init {
         viewModelScope.launch {
             mainRepository.refreshFlowsMenu()
-
-
         }
 
     }

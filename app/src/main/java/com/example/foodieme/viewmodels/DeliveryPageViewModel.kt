@@ -25,6 +25,10 @@ class DeliveryPageViewModel @Inject constructor(
 
 
     var cartCheckoutMenu = mainRepository.returnActiveOrdersInCheckOutMenu()
+    private var getCartCheckoutMenu = Transformations.map(cartCheckoutMenu){
+        it.isNotEmpty()
+    }
+
 
     private var prefs =
         application.getSharedPreferences(
@@ -98,8 +102,12 @@ class DeliveryPageViewModel @Inject constructor(
 
     init {
 
-        viewModelScope.launch {
-            startTimer()
+        getCartCheckoutMenu.observeForever {
+            if (it) {
+                viewModelScope.launch {
+                    startTimer()
+                }
+            }
         }
 
 

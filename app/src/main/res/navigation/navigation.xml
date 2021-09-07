@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
     app:startDestination="@id/homescreenfragment">
+
 
     <fragment
         android:id="@+id/homescreenfragment"
@@ -26,7 +27,8 @@
         android:name="com.example.foodieme.ui.DetailScreenFragment"
         android:label="DetailScreenFragment"
         tools:layout="@layout/detailscreen">
-        <argument android:name="flowsMenu"
+        <argument
+            android:name="flowsMenu"
             app:argType="com.example.foodieme.domain.FlowsMenu" />
         <action
             android:id="@+id/action_detailscreenfragment_to_addToCartFragment"
@@ -68,4 +70,13 @@
         android:name="com.example.foodieme.FlutterWave"
         android:label="activity_flutter_wave"
         tools:layout="@layout/activity_flutter_wave" />
+    <action
+        android:id="@+id/action_global_deliveryPageFragment"
+        app:destination="@id/deliveryPageFragment" />
+
+    <fragment
+        android:id="@+id/homeNavHostFragment2"
+        android:name="com.example.foodieme.ui.HomeNavHostFragment"
+        android:label="HomeNavHostFragment"
+        tools:layout="@layout/fragment_home_nav_host" />
 </navigation>

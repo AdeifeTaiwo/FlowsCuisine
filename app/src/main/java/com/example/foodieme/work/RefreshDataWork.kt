@@ -22,9 +22,12 @@ package com.example.foodieme.work
 
 
 import android.content.Context
+import androidx.fragment.app.FragmentManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.foodieme.repository.MainMainRepository
+import com.example.foodieme.ui.HomeScreenFragment
+import com.example.foodieme.viewmodels.HomeScreenViewModel
 
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -34,8 +37,9 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
 
     @Inject lateinit var repository: MainMainRepository
 
+
     companion object {
-        const val WORK_NAME = "RefreshDataWorker"
+        const val WORK_NAME = "RefreshLocationWorker"
     }
 
     /**

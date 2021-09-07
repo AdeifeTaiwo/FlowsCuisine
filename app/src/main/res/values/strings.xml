@@ -27,4 +27,7 @@
     <string name="public_key">FLWPUBK_TEST-8ad3b86f4e9fed3abc0d1f0621cc4f52-X</string>
     <string name="secret_key">FLWSECK_TEST-097aa4d66dcb9fd0cb544915a1befe0c-X</string>
     <string name="encryption_key">FLWSECK_TEST6a2aa15ad86b</string>
+    <string name="permission_denied_explanation">denied</string>
+    <string name="settings">settings</string>
+    <string name="location_required_error">location fetch error</string>
 </resources>
